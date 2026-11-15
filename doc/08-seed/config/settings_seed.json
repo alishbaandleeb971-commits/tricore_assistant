@@ -1,0 +1,366 @@
+{
+  "_note": "DEV SEED SETTINGS (12 Nov 2026, rev 2: Option B / Cloudflare). Provisional values from DECISIONS_APPLIED.md. Items with _dummy must be replaced before launch. Seed into D1 via a migration/seed script; secrets go in Worker secrets or .dev.vars, never here.",
+  "assistant": {
+    "name": "TriCore Assistant",
+    "texts_file": "content/assistant_texts.md",
+    "consent_version": "v0.1-draft",
+    "privacy_policy_url": null,
+    "_privacy_policy_url_dummy": "https://tricoredigitaltech.com/privacy-policy"
+  },
+  "services": [
+    {
+      "slug": "ai-services",
+      "name": "AI Services",
+      "sort": 1,
+      "active": true
+    },
+    {
+      "slug": "digital-marketing",
+      "name": "Digital Marketing",
+      "sort": 2,
+      "active": true
+    },
+    {
+      "slug": "web-development",
+      "name": "Web Development",
+      "sort": 3,
+      "active": true
+    },
+    {
+      "slug": "graphic-designing",
+      "name": "Graphic Designing",
+      "sort": 4,
+      "active": true
+    },
+    {
+      "slug": "seo",
+      "name": "SEO",
+      "sort": 5,
+      "active": true
+    },
+    {
+      "slug": "video-editing",
+      "name": "Video Editing",
+      "sort": 6,
+      "active": true
+    },
+    {
+      "slug": "mobile-app-development",
+      "name": "Mobile App Development",
+      "sort": 7,
+      "active": true
+    },
+    {
+      "slug": "wordpress-development",
+      "name": "WordPress Development",
+      "sort": 8,
+      "active": true
+    }
+  ],
+  "combinations": [
+    {
+      "id": "web-seo",
+      "services": [
+        "web-development",
+        "seo"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "id": "wordpress-seo",
+      "services": [
+        "wordpress-development",
+        "seo"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "id": "ai-web",
+      "services": [
+        "ai-services",
+        "web-development"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "id": "seo-marketing",
+      "services": [
+        "seo",
+        "digital-marketing"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "id": "video-marketing",
+      "services": [
+        "video-editing",
+        "digital-marketing"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "id": "design-marketing",
+      "services": [
+        "graphic-designing",
+        "digital-marketing"
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "app-web",
+      "services": [
+        "mobile-app-development",
+        "web-development"
+      ],
+      "status": "proposed"
+    }
+  ],
+  "allow_other_supported_combinations": true,
+  "budget_ranges_dummy": {
+    "PKR": [
+      {
+        "id": "pkr-1",
+        "label": "Under Rs 150,000",
+        "min": 0,
+        "max": 150000
+      },
+      {
+        "id": "pkr-2",
+        "label": "Rs 150,000 – 500,000",
+        "min": 150000,
+        "max": 500000
+      },
+      {
+        "id": "pkr-3",
+        "label": "Rs 500,000 – 1,500,000",
+        "min": 500000,
+        "max": 1500000
+      },
+      {
+        "id": "pkr-4",
+        "label": "Above Rs 1,500,000",
+        "min": 1500000,
+        "max": null
+      }
+    ],
+    "USD": [
+      {
+        "id": "usd-1",
+        "label": "Under $500",
+        "min": 0,
+        "max": 500
+      },
+      {
+        "id": "usd-2",
+        "label": "$500 – 2,000",
+        "min": 500,
+        "max": 2000
+      },
+      {
+        "id": "usd-3",
+        "label": "$2,000 – 5,000",
+        "min": 2000,
+        "max": 5000
+      },
+      {
+        "id": "usd-4",
+        "label": "Above $5,000",
+        "min": 5000,
+        "max": null
+      }
+    ]
+  },
+  "currency_default_rule": "Asia/Karachi browser time zone -> PKR, otherwise USD; visitor can switch",
+  "timeline_options": [
+    {
+      "id": "asap",
+      "label": "As soon as possible",
+      "within_3_months": true
+    },
+    {
+      "id": "1m",
+      "label": "Within 1 month",
+      "within_3_months": true
+    },
+    {
+      "id": "1-3m",
+      "label": "1–3 months",
+      "within_3_months": true
+    },
+    {
+      "id": "3-6m",
+      "label": "3–6 months",
+      "within_3_months": false
+    },
+    {
+      "id": "exploring",
+      "label": "Just exploring",
+      "within_3_months": false
+    }
+  ],
+  "hot_threshold": {
+    "production": {
+      "PKR": null,
+      "USD": null
+    },
+    "dev_staging_dummy": {
+      "PKR": 500000,
+      "USD": 2000
+    },
+    "rule": "range minimum >= threshold for its currency"
+  },
+  "working_hours": {
+    "timezone": "Asia/Karachi",
+    "days": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri"
+    ],
+    "start": "09:00",
+    "end": "19:00",
+    "callback_only_today": false
+  },
+  "handover": {
+    "wait_seconds": 180,
+    "allow_late_join_if_no_callback": true,
+    "assistant_resumes_after_live_chat": true
+  },
+  "conversation": {
+    "max_clarifying_questions": 2,
+    "abuse_strikes": 3,
+    "field_retries": 2,
+    "idle_close_minutes": 30,
+    "resume_within_hours": 24,
+    "recent_messages_to_ai": 6,
+    "top_passages": 4
+  },
+  "limits": {
+    "messages_per_minute": 10,
+    "messages_per_conversation": 40,
+    "max_message_chars": 1000,
+    "monthly_ai_limit_usd": 100,
+    "warning_at_percent": 80,
+    "daily_cap_rule": "monthly_limit / days_in_month * 3",
+    "test_ai_limit_usd": 20,
+    "turnstile_down_policy": "allow_with_stricter_limits"
+  },
+  "ai": {
+    "mode": "budget",
+    "provider": null,
+    "_provider_note": "Chosen in week-7 bake-off (OpenAI / Anthropic / Gemini). Use any available key in development.",
+    "summary_source": "template",
+    "ai_judge_for_tests": true,
+    "gateway": "optional Cloudflare AI Gateway (logging off for visitor text)"
+  },
+  "alerts": {
+    "email_to": [
+      "Info@tricoredigitaltech.com"
+    ],
+    "slack_channel_dummy": "#website-leads",
+    "slack_webhook_env": "SLACK_WEBHOOK_URL",
+    "hot_email_prefix": "🔥 HOT LEAD – ",
+    "hot_slack_mention": "@here",
+    "send_delay_seconds": 60,
+    "max_attempts": 5,
+    "spending_warning_to_dummy": [
+      "management",
+      "developer"
+    ],
+    "fault_alerts_to_dummy": [
+      "developer",
+      "backup person (TBD)"
+    ],
+    "email_transport": "cloudflare_send_email_binding (verified destinations only)",
+    "email_from_dummy": "assistant@tricoredigitaltech.com",
+    "email_fallback": "brevo_free_tier",
+    "retry": "queue retries, max 5, exponential backoff; cron re-sends pending outbox rows older than 2 minutes"
+  },
+  "retention": {
+    "chats_days": 90,
+    "leads_months": 12,
+    "logs_days": 14,
+    "d1_time_travel_days": 7,
+    "r2_daily_exports": 14,
+    "r2_monthly_exports": 3
+  },
+  "jobs_pkt": {
+    "d1_export_github_actions": "02:00",
+    "retention_delete": "03:00",
+    "sweep": "every minute",
+    "usage_check": "hourly"
+  },
+  "quality": {
+    "pass_mark": 45,
+    "total_questions": 50,
+    "block_publish_below_pass": true,
+    "weekly_review_size": 20,
+    "weekly_review_rule": "all unanswered/wrong + random to 20"
+  },
+  "dashboard": {
+    "chat_definition": "at least one visitor message",
+    "top_questions_grouping": "topic label",
+    "conversion_target_percent": 5
+  },
+  "roles_dummy": [
+    {
+      "name": "Ahmed Waheed",
+      "email": "REPLACE_ME@tricoredigitaltech.com",
+      "role": "admin"
+    }
+  ],
+  "privacy": {
+    "store_ip": false,
+    "ip_used_by_app": false,
+    "rate_limit_before_worker": "Cloudflare rate-limiting rule on /api/*",
+    "data_region": "D1 weur hint, R2 eu jurisdiction"
+  },
+  "platform": {
+    "option": "B (SDD_CLOUDFLARE.md)",
+    "runtime": "Cloudflare Workers (TypeScript, Hono, Zod)",
+    "database": {
+      "type": "D1",
+      "name_prod": "assistant-prod",
+      "name_staging": "assistant-staging",
+      "location_hint": "weur",
+      "orm": "drizzle"
+    },
+    "durable_objects": [
+      "Conversation",
+      "StaffHub"
+    ],
+    "queues": [
+      "notifications"
+    ],
+    "crons_utc": {
+      "sweep": "* * * * *",
+      "retention": "0 22 * * *",
+      "usage_check": "0 * * * *"
+    },
+    "r2_backup_bucket": {
+      "name": "assistant-backups",
+      "jurisdiction": "eu",
+      "keep_daily": 14,
+      "keep_monthly": 3
+    },
+    "custom_domain": "assistant.tricoredigitaltech.com",
+    "fallback_domain_dummy": "assistant.<account>.workers.dev",
+    "staging_account": "separate free Cloudflare account",
+    "upgrade_rule": "Workers Paid ($5) if any daily cap > 60% twice in a month; review at 3 months"
+  },
+  "auth": {
+    "staff": "cloudflare_access",
+    "access_methods": [
+      "one_time_pin",
+      "google"
+    ],
+    "session_hours": 8,
+    "max_free_users": 50
+  },
+  "free_tier_watch": {
+    "alert_at_percent_of_daily_cap": 60,
+    "d1_size_alert_mb": 350,
+    "cpu_p99_budget_ms": 7
+  }
+}

@@ -1,0 +1,38 @@
+# Agent Activity Log
+
+**Project:** TriCore Digital Tech — Website AI Assistant (Phase 1)  
+**Format Rule:** Every session appends an entry following Section A7. Never delete or overwrite previous entries.
+
+---
+
+## Session 2026-11-15: Setup & Documentation Baseline (Stage G0)
+
+- **Date / Time:** 2026-11-15T02:26:00+05:00
+- **Developer / Reviewer:** Alishba
+- **Architect / Partner:** Antigravity (AI)
+- **Stage:** G0 — Project Setup & Documentation Baseline
+
+### Actions Taken:
+1. Inspected project root folder structure and verified absence of git repository.
+2. Read all documentation in full:
+   - `doc/SRS.md` (v0.3, 1,271 lines)
+   - `doc/SDD_CLOUDFLARE.md` (v0.3 standalone, 2,244 lines)
+   - `doc/08-seed/DECISIONS_APPLIED.md` (rev 2, 123 lines)
+   - `doc/08-seed/README.md`, `brand.md`, `assistant_texts.md`, `settings_seed.json`, `knowledge_base_DUMMY.md`, `test_questions_DUMMY.csv`, `ANTIGRAVITY_SETUP_PROMPT.md` (v4).
+3. Verified requirement count using automated PowerShell parsing: exactly 316 core requirements (168 FR, 21 AIR, 24 DR, 10 IR, 21 NFR, 26 EXC, 34 BR, 12 CON) plus 18 PRM and 92 AC.
+4. Created core control files in root:
+   - `.gitignore` (protects secrets, build artifacts, databases, node_modules)
+   - `.dev.vars.example` (lists variable names only: `AI_API_KEY`, `SLACK_WEBHOOK_URL`, `TURNSTILE_SECRET`, `ACCESS_TEAM_DOMAIN`, `ACCESS_AUD`, `SENTRY_DSN`)
+   - `PROJECT_BRIEF.md` (single-page Cloudflare Zero-Cost reference, corrected previous brief inaccuracies)
+   - `TODO.md` (structured across 6 stages G1–G6 with granular tasks, dependencies, tests, criteria, and ⏳ launch blockers)
+   - `PROGRESS.md` (stage progress, current activity, next step)
+   - `DECISIONS.md` (approved architectural decisions DEC-B01–B11, DEC-05, 06, 09, 10, 13–18, plus open questions ⏳ TBD-01–07)
+   - `REQUIREMENTS_TRACEABILITY.md` (traceability matrix covering all 316 requirements + PRM + AC mapped to stage, package, and test harness)
+   - `ERROR_LOG.md` (error prevention & incident tracking)
+   - `AGENTS.md` (agent operating rules & constraints, under 6,000 chars)
+   - Agent skills under `.agents/skills/` (`start-session`, `implement-task`, `gate-report`)
+5. Prepared Gate G0 Report.
+
+### Status at Completion of Session:
+Stage G0 Setup is complete. Zero application code, zero packages installed, zero git commits made. Awaiting Alishba's explicit command `"go G1"`.
+
