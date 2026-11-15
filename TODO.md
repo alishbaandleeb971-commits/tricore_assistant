@@ -70,14 +70,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-007: D1 Seed Script (from `doc/08-seed/`)**
+- [x] **TASK-007: D1 Seed Script (from `doc/08-seed/`)**
   - **Description:** Build database seeder reading `doc/08-seed/config/settings_seed.json` and `doc/08-seed/content/knowledge_base_DUMMY.md` to populate 8 services, default combinations, budget ranges, timeline options, assistant texts, and dummy FAQs.
   - **Related SRS Requirement:** BR-001, BR-016, BR-017, FR-020
   - **Related SDD Section:** SDD §5.2, §7.6
   - **Acceptance Criteria:** Seeder inserts 8 services, settings, and dummy knowledge base into local D1 without duplicates.
   - **Required Tests:** Seed test verifying row counts across `service`, `setting`, and `knowledge_chunk`.
   - **Dependencies:** TASK-006
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-008: Health Routes (`/healthz` and `/readyz`)**
