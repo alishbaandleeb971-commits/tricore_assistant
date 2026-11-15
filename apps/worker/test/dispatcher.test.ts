@@ -50,7 +50,7 @@ describe("Queue Consumer & Notification Dispatcher (TASK-024)", () => {
           retry
         }
       ]
-    } as unknown as MessageBatch<any>;
+    } as unknown as MessageBatch<unknown>;
 
     await processQueueBatch(mockBatch, env.DB, {
       emailSend: async () => true

@@ -248,7 +248,9 @@ export class StaffHubDO {
             this.pendingHandovers.delete(msg.handoverId);
             this.broadcast({ type: "handover_claimed", handoverId: msg.handoverId, claimedBy: msg.staffId });
           }
-        } catch {}
+        } catch {
+          // ignore malformed message
+        }
       });
 
       return new Response(null, { status: 101, webSocket: client });

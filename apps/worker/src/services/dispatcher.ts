@@ -64,7 +64,7 @@ Notes: ${data.description || "None"}
 }
 
 export async function processQueueBatch(
-  batch: MessageBatch<any>,
+  batch: MessageBatch<unknown>,
   db: D1Database,
   adapters?: {
     emailSend?: (to: string, subject: string, body: string) => Promise<boolean>;

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { StaffHubDO } from "../src/durable/conversation";
 import { env } from "cloudflare:test";
 
