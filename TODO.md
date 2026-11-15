@@ -10,24 +10,24 @@
 
 **Gate G1 Deliverable:** `npm test` green; local `wrangler dev` starts; database schema matches SDD §7.
 
-- [ ] **TASK-001: Monorepo Layout & Workspace Configuration**
+- [x] **TASK-001: Monorepo Layout & Workspace Configuration**
   - **Description:** Set up project directory structure: `apps/worker`, `apps/widget`, `apps/staff`, `packages/shared`, `migrations/`. Initialize root `package.json` with npm workspaces, strict `tsconfig.json`, ESLint, Prettier.
   - **Related SRS Requirement:** N/A (Project foundation)
   - **Related SDD Section:** SDD §1.2, §2.2, §17.3
   - **Acceptance Criteria:** Monorepo workspaces link correctly; TypeScript compiles with zero errors under strict mode; linting passes.
   - **Required Tests:** `npm run typecheck`, `npm run lint`
   - **Dependencies:** None
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-002: Cloudflare Wrangler Bindings & Environment Config**
+- [x] **TASK-002: Cloudflare Wrangler Bindings & Environment Config**
   - **Description:** Create `apps/worker/wrangler.jsonc` defining all platform bindings (`DB` D1, `CONVERSATION` DO, `STAFF_HUB` DO, `NOTIFY` Queue, `BACKUPS` R2, `EMAIL` send_email, `ASSETS`, and cron schedules).
   - **Related SRS Requirement:** IR-008, CON-010
   - **Related SDD Section:** SDD §2.4, §17.3 (DEC-B01, DEC-B02)
   - **Acceptance Criteria:** `wrangler.jsonc` contains no secrets; binding names align with TypeScript definitions; types generate via `npx wrangler types`.
   - **Required Tests:** `npx wrangler types` succeeds without warnings.
   - **Dependencies:** TASK-001
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-003: Vitest Test Environment with Workers Pool**

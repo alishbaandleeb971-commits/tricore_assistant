@@ -1,0 +1,80 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tricore-assistant-worker",
+  "main": "src/index.ts",
+  "compatibility_date": "2024-11-12",
+  "compatibility_flags": ["nodejs_compat"],
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "assistant-dev",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "../../migrations"
+    }
+  ],
+
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "CONVERSATION",
+        "class_name": "ConversationDO"
+      },
+      {
+        "name": "STAFF_HUB",
+        "class_name": "StaffHubDO"
+      }
+    ]
+  },
+
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_classes": ["ConversationDO", "StaffHubDO"]
+    }
+  ],
+
+  "queues": {
+    "producers": [
+      {
+        "binding": "NOTIFY",
+        "queue": "assistant-notify-dev"
+      }
+    ],
+    "consumers": [
+      {
+        "queue": "assistant-notify-dev",
+        "max_batch_size": 10,
+        "max_batch_timeout": 30
+      }
+    ]
+  },
+
+  "r2_buckets": [
+    {
+      "binding": "BACKUPS",
+      "bucket_name": "assistant-backups-dev"
+    }
+  ],
+
+  "send_email": [
+    {
+      "name": "EMAIL"
+    }
+  ],
+
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "../widget/dist"
+  },
+
+  "triggers": {
+    "crons": [
+      "0 3 * * *"
+    ]
+  },
+
+  "vars": {
+    "ENVIRONMENT": "development"
+  }
+}
