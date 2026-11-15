@@ -40,14 +40,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-004: GitHub Actions CI Workflow**
+- [x] **TASK-004: GitHub Actions CI Workflow**
   - **Description:** Create `.github/workflows/ci.yml` running lint, typecheck, Vitest, and migration validation.
   - **Related SRS Requirement:** N/A (CI/CD)
   - **Related SDD Section:** SDD §16.8, §17.4
   - **Acceptance Criteria:** Automated workflow executes cleanly on pull requests and commits.
   - **Required Tests:** Local action syntax validation / dry run.
   - **Dependencies:** TASK-003
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-005: Full D1 Database Schema & Drizzle Definitions**
