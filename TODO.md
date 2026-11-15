@@ -358,14 +358,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-037: 8-Metric Performance Dashboard Screen**
+- [x] **TASK-037: 8-Metric Performance Dashboard Screen**
   - **Description:** Implement `MOD-14` queries and staff UI displaying the 8 confirmed metrics with PKT date filter (Last 7 Days, Last 30 Days, Custom Range).
   - **Related SRS Requirement:** FR-116–FR-129, IN-09
   - **Related SDD Section:** SDD §3.2, §12.1, §12.2 (MOD-03, MOD-14)
   - **Acceptance Criteria:** All 8 metrics calculate accurately against reference fixture dataset; results cache for 60 seconds.
   - **Required Tests:** Dashboard SQL query integration tests against reference data fixture.
   - **Dependencies:** TASK-005, TASK-033
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-038: Weekly 20-Chat Review Screen & To-Fix List**
