@@ -298,14 +298,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-031: Embed Loader Script (`widget.js`) & Iframe Host Isolation**
+- [x] **TASK-031: Embed Loader Script (`widget.js`) & Iframe Host Isolation**
   - **Description:** Build vanilla JavaScript loader script injected onto host website creating floating launcher button and isolated `<iframe>` pointing to widget app.
   - **Related SRS Requirement:** FR-001, FR-002, IR-007
   - **Related SDD Section:** SDD §3.1 (MOD-01, DEC-09)
   - **Acceptance Criteria:** Single script tag embeds cleanly; communicates open/close state via `window.postMessage`; host page CSS does not bleed into widget.
   - **Required Tests:** Host page embedding test on sample HTML document.
   - **Dependencies:** TASK-030
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-032: Cloudflare Access JWT Verification Middleware**
