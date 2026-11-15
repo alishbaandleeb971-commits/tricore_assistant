@@ -504,13 +504,13 @@
   - **Status:** Not started
   - **Blocking TBDs:** TBD-56, TBD-69, TBD-72 (⏳ Launch Blockers)
 
-- [ ] **TASK-063: Operational Runbooks & Go-Live Handoff**
+- [x] **TASK-063: Operational Runbooks & Go-Live Handoff**
   - **Description:** Document operational runbooks from SDD §14.8 (provider outage, D1 recovery, alert retry, key rotation, moving to Workers Paid if limits approached).
   - **Related SRS Requirement:** N/A (Operations)
   - **Related SDD Section:** SDD §14.8
   - **Acceptance Criteria:** Runbooks complete, verified, and delivered to management and technical team.
   - **Required Tests:** Documentation review.
   - **Dependencies:** TASK-062
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
