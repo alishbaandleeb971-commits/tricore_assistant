@@ -2,7 +2,13 @@ import { Hono } from "hono";
 import { uuidv7 } from "uuidv7";
 import { accessAuthMiddleware } from "../middleware/accessAuth.js";
 
-export const knowledgeRouter = new Hono();
+export type KnowledgeEnv = {
+  Bindings: {
+    DB: D1Database;
+  };
+};
+
+export const knowledgeRouter = new Hono<KnowledgeEnv>();
 
 // List entries
 knowledgeRouter.get("/entries", accessAuthMiddleware(), async (c) => {
@@ -19,7 +25,6 @@ knowledgeRouter.post("/entries", accessAuthMiddleware(), async (c) => {
 
   const entryId = uuidv7();
   const versionId = uuidv7();
-  const now = Date.now();
 
   await db.batch([
     db.prepare(
