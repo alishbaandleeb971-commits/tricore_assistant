@@ -13,8 +13,8 @@
 | Stage | Name | Target Tasks | Status | Gate Status |
 |:---|:---|:---|:---|:---|
 | **G0** | Documentation & Control Setup | Setup deliverables | **Completed** | Approved |
-| **G1** | Foundation and Data | TASK-001 to TASK-008 | **Completed** | Awaiting Gate G1 Approval |
-| **G2** | Core Domain & Database (D1/Drizzle) | TASK-201 to TASK-208 | Not Started | Locked |
+| **G1** | Foundation and Data | TASK-001 to TASK-008 | **Completed** | Approved |
+| **G2** | Assistant Core | TASK-010 to TASK-017 | **Completed** | Awaiting Gate G2 Approval |
 | **G3** | Worker API & State Machines | TASK-301 to TASK-311 | Not Started | Locked |
 | **G4** | Chatbot Widget (Preact) | TASK-401 to TASK-407 | Not Started | Locked |
 | **G5** | Staff Dashboard (React) | TASK-501 to TASK-509 | Not Started | Locked |
@@ -22,18 +22,18 @@
 
 ---
 
-## 2. Current Activity: Stage G1 (Foundation and Data) Complete
+## 2. Current Activity: Stage G2 (Assistant Core) Complete
 
 ### What Is Done:
-1. **TASK-001:** Initialized monorepo workspaces (`apps/worker`, `apps/widget`, `apps/staff`, `packages/shared`). Configured TypeScript composite project references, ESLint, and Prettier.
-2. **TASK-002:** Configured `apps/worker/wrangler.jsonc` with zero secrets, platform bindings (`DB`, `CONVERSATION`, `STAFF_HUB`, `NOTIFY`, `BACKUPS`, `EMAIL`, `ASSETS`), and generated Worker environment types.
-3. **TASK-003:** Configured Vitest test runner with isolated `@cloudflare/vitest-pool-workers`.
-4. **TASK-004:** Added GitHub Actions CI workflow (`.github/workflows/ci.yml`) running typecheck, lint, and test suites.
-5. **TASK-005:** Implemented full D1 database schema with Drizzle ORM (35 tables matching SDD §7.1 and §7.2, UTC millisecond timestamps, zero IP address columns).
-6. **TASK-006:** Generated and applied local D1 migrations with FTS5 (`knowledge_fts`) and Trigram (`knowledge_trgm`) virtual tables and automatic synchronization triggers.
-7. **TASK-007:** Seeded 8 official services, budget ranges, timeline options, settings, and dummy knowledge base chunks. Verified FTS5 matching.
-8. **TASK-008:** Implemented public `/healthz` and `/readyz` endpoints with D1 probe verification.
+1. **TASK-010:** PII masking engine with credit card Luhn check and secret sanitization.
+2. **TASK-011:** Public sessions API (`POST /api/v1/public/sessions`) with Cloudflare Turnstile verification and zero IP storage.
+3. **TASK-012:** Rate limiter enforcing 10 msgs/min, 40 msgs/session, 1,000 chars/message via D1 `rate_counter` without storing IP addresses.
+4. **TASK-013:** SQLite FTS5 knowledge retrieval service querying `knowledge_fts` (BM25 ranking) and `knowledge_trgm` fuzzy matching.
+5. **TASK-014:** Provider-independent model gateway with Zod schema validation and deterministic fake provider.
+6. **TASK-015:** AI monthly budget gate tracking spend in `spend_month`, triggering 80% warning alerts, and enforcing $100 cap.
+7. **TASK-016:** Deterministic answer guard blocking unapproved price quotes with standardized templates and stripping ungrounded passages.
+8. **TASK-017:** Durable Object `ConversationDO` state machine executing multi-turn conversations, persisting turns in single atomic D1 batches.
 
 ### Exact Next Action:
-Present Gate G1 Report to Alishba and await approval command `"go G2"` to begin Stage G2 (Assistant Core).
+Present Gate G2 Report to Alishba. With authorization to continue ("Go G2-G6"), proceed directly to Stage G3 (Leads, Handover, Alerts).
 

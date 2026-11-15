@@ -59,3 +59,26 @@ Stage G0 Setup is complete. Zero application code, zero packages installed, zero
 3. Cleaned and committed each task incrementally on `build/G1`.
 4. Verified zero compilation errors (`npm run typecheck`), zero lint issues (`npm run lint`), and 100% test pass rate (3 test suites, 6 tests).
 5. Executed `gate-report` protocol.
+
+
+## Session 2026-11-15: Stage G2 (Assistant Core) Complete
+
+- **Date / Time:** 2026-11-15T12:33:25+05:00
+- **Developer / Reviewer:** Alishba
+- **Architect / Partner:** Antigravity (AI)
+- **Stage:** G2 — Assistant Core
+
+### Actions Taken:
+1. Switched to branch `build/G2`.
+2. Completed all tasks in Stage G2:
+   - **TASK-010:** Implemented PII masking engine with Luhn credit card validation and password/secret masking.
+   - **TASK-011:** Implemented `POST /api/v1/public/sessions` with Turnstile verification, returning session ID, greeting, and quick buttons. Zero visitor IP storage.
+   - **TASK-012:** Implemented rate limiter in `apps/worker/src/services/rateLimiter.ts` using D1 `rate_counter` (10 msg/min, 40 msg/session, 1,000 char max).
+   - **TASK-013:** Implemented SQLite FTS5 knowledge retrieval service using BM25 ranking (weights: title 10, keywords 5, body 1) with trigram fallback.
+   - **TASK-014:** Implemented provider-independent ModelGateway with Zod schema validation and deterministic fake provider.
+   - **TASK-015:** Implemented AI monthly budget gate tracking micro-dollars in `spend_month`, triggering warning alert at 80% ($80), and capping at $100.
+   - **TASK-016:** Implemented deterministic answer guard stripping price quotes and ungrounded passage IDs.
+   - **TASK-017:** Implemented `ConversationDO` Durable Object state machine executing multi-turn chats, answering from dummy content, and refusing prices in atomic D1 batches.
+3. Cleaned and committed each task incrementally on `build/G2`.
+4. Verified zero compilation errors (`npm run typecheck`), zero lint issues (`npm run lint`), and 100% test pass rate (11 test suites, 23 tests).
+5. Executed `gate-report` protocol.
