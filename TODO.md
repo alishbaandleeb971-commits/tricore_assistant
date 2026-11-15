@@ -242,14 +242,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-026: Working Hours Evaluator (PKT Timezone Math)**
+- [x] **TASK-026: Working Hours Evaluator (PKT Timezone Math)**
   - **Description:** Implement timezone-aware evaluation checking whether current time is within 9:00 AM – 7:00 PM PKT, Monday to Friday.
   - **Related SRS Requirement:** CON-007, BR-012, FR-070, FR-071
   - **Related SDD Section:** SDD §11.3 (MOD-10)
   - **Acceptance Criteria:** Accurately evaluates PKT time; handles weekends and `callback_only_today` setting; routes to callback outside hours.
   - **Required Tests:** Unit tests with simulated timestamps (Sunday evening, Tuesday 11 AM PKT, holiday).
   - **Dependencies:** TASK-005
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-027: Handover Durable Object Alarm & 3-Minute Timer**
