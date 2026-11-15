@@ -36,3 +36,26 @@
 ### Status at Completion of Session:
 Stage G0 Setup is complete. Zero application code, zero packages installed, zero git commits made. Awaiting Alishba's explicit command `"go G1"`.
 
+
+
+## Session 2026-11-15: Stage G1 (Foundation and Data) Complete
+
+- **Date / Time:** 2026-11-15T12:09:20+05:00
+- **Developer / Reviewer:** Alishba
+- **Architect / Partner:** Antigravity (AI)
+- **Stage:** G1 — Foundation and Data
+
+### Actions Taken:
+1. Executed `start-session` pre-flight checks: initialized local git repository on `build/G1` branch.
+2. Completed all tasks in Stage G1:
+   - **TASK-001:** Initialized monorepo workspaces (`apps/worker`, `apps/widget`, `apps/staff`, `packages/shared`) with strict TypeScript composite project configs, ESLint, and Prettier.
+   - **TASK-002:** Configured `apps/worker/wrangler.jsonc` defining all Cloudflare bindings and generated types via `wrangler types`.
+   - **TASK-003:** Set up Vitest test runner using `@cloudflare/vitest-pool-workers` for isolated runtime testing.
+   - **TASK-004:** Created `.github/workflows/ci.yml` for automated lint, typecheck, and test CI runs.
+   - **TASK-005:** Implemented complete Drizzle SQLite schema with 35 tables matching SDD §7.1 and §7.2 with zero IP columns.
+   - **TASK-006:** Generated initial migration and added FTS5 (`knowledge_fts`) and trigram (`knowledge_trgm`) virtual tables and sync triggers. Applied to local D1.
+   - **TASK-007:** Seeded 8 official services, budget ranges, timeline options, settings, and dummy knowledge base chunks. Verified FTS5 matching.
+   - **TASK-008:** Implemented and tested `/healthz` and `/readyz` endpoints.
+3. Cleaned and committed each task incrementally on `build/G1`.
+4. Verified zero compilation errors (`npm run typecheck`), zero lint issues (`npm run lint`), and 100% test pass rate (3 test suites, 6 tests).
+5. Executed `gate-report` protocol.
