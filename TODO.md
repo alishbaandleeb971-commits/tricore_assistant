@@ -126,14 +126,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-013: SQLite FTS5 Knowledge Retrieval Service**
+- [x] **TASK-013: SQLite FTS5 Knowledge Retrieval Service**
   - **Description:** Implement `MOD-07` knowledge retrieval querying `knowledge_fts` (bm25 weights: title 10, keywords 5, body 1) and `knowledge_trgm` fuzzy matches against live content release.
   - **Related SRS Requirement:** AIR-001, AIR-002, FR-020
   - **Related SDD Section:** SDD §5.4, §5.5 (MOD-07, DEC-B08)
   - **Acceptance Criteria:** Searches return top 4 chunks with IDs and scores; scores below threshold return empty results.
   - **Required Tests:** Retrieval tests with exact service terms, synonyms, and misspellings.
   - **Dependencies:** TASK-006, TASK-007
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-014: Provider-Independent Model Gateway with Fake Provider**
