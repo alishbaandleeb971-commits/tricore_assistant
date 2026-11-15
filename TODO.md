@@ -438,14 +438,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-053: Playwright End-to-End Test Suite**
+- [x] **TASK-053: Playwright End-to-End Test Suite**
   - **Description:** Build Playwright test suite covering the 5 official practice situations (quick question, undecided visitor, quote request, handover, after-hours chat) across desktop and mobile viewports.
   - **Related SRS Requirement:** FR-135, RAC-03, AC-059
   - **Related SDD Section:** SDD §16.1, §16.7
   - **Acceptance Criteria:** All 5 practice flows execute end-to-end in headless Chromium, Firefox, and WebKit without errors.
   - **Required Tests:** `npx playwright test` passes 100%.
   - **Dependencies:** Stage G4
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-054: Daily R2 Backup Workflow (GitHub Actions)**
