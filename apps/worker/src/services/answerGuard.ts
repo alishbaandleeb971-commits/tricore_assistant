@@ -3,12 +3,7 @@ const PRICE_PATTERNS = [
   /\$\s*\d+(?:,\d{3})*(?:\.\d{2})?/gi,
   /(?:rs\.?|pkr)\s*\d+(?:,\d{3})*/gi,
   /\b\d+\s*(?:dollars|usd|rupees)\b/gi,
-  /\b(?:costs?|charges?|fees?)\s*(?:is|are|of)?\s*(?:around|about|approx)?\s*[\$£€\d]/gi
-];
-
-// Competitor names that should not be compared or mentioned negatively
-const FORBIDDEN_COMPETITOR_PATTERNS = [
-  /\b(?:competitor|rival)\b/gi
+  /\b(?:costs?|charges?|fees?)\s*(?:is|are|of)?\s*(?:around|about|approx)?\s*[$£€\d]/gi
 ];
 
 const FIXED_PRICE_REDIRECT =

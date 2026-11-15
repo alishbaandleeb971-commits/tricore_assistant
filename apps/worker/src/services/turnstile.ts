@@ -39,7 +39,7 @@ export async function verifyTurnstileToken(
       return { success: true };
     }
     return { success: false, error: data["error-codes"]?.join(", ") || "verification_failed" };
-  } catch (err: unknown) {
+  } catch {
     // If Cloudflare Turnstile service is unreachable (TBD-15 fallback), log and allow session
     return { success: true, error: "turnstile_service_unavailable_fallback" };
   }

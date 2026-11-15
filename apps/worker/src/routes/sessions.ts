@@ -1,6 +1,5 @@
 import { Hono } from "hono";
 import { uuidv7 } from "uuidv7";
-import { visitorSession } from "../db/schema.js";
 import { verifyTurnstileToken, hashToken } from "../services/turnstile.js";
 
 export type SessionEnv = {

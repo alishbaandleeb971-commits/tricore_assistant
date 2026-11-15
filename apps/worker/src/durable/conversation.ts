@@ -20,15 +20,21 @@ export interface ConversationTurnResponse {
   intent: string;
 }
 
+export interface WorkerEnv {
+  DB: D1Database;
+  AI_API_KEY?: string;
+  [key: string]: unknown;
+}
+
 export class ConversationDO {
   private state: DurableObjectState;
-  private env: any;
+  private env: WorkerEnv;
   private initialized = false;
   private conversationId: string | null = null;
   private sessionId: string | null = null;
   private seq = 0;
 
-  constructor(state: DurableObjectState, env: any) {
+  constructor(state: DurableObjectState, env: WorkerEnv) {
     this.state = state;
     this.env = env;
   }
@@ -151,9 +157,9 @@ export class ConversationDO {
 
 export class StaffHubDO {
   private state: DurableObjectState;
-  private env: any;
+  private env: Record<string, unknown>;
 
-  constructor(state: DurableObjectState, env: any) {
+  constructor(state: DurableObjectState, env: Record<string, unknown>) {
     this.state = state;
     this.env = env;
   }

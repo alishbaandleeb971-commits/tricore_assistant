@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { checkAndRecordSpend, MONTHLY_SPEND_LIMIT_MICRO, WARNING_THRESHOLD_MICRO } from "../src/services/budgetGate";
+import { checkAndRecordSpend } from "../src/services/budgetGate";
 import { env } from "cloudflare:test";
 
 describe("AI Monthly Budget Gate (TASK-015)", () => {
