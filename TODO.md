@@ -288,14 +288,14 @@
 
 **Gate G4 Deliverable:** Click through chat widget and staff administration app locally.
 
-- [ ] **TASK-030: Chat Widget Preact Application (`apps/widget`)**
+- [x] **TASK-030: Chat Widget Preact Application (`apps/widget`)**
   - **Description:** Build Preact + TypeScript widget application inside `apps/widget`: message bubbles, quick buttons, consent buttons, budget/timeline selection, handover banner, callback form, and offline card.
   - **Related SRS Requirement:** FR-001–FR-011, IR-001
   - **Related SDD Section:** SDD §3.1 (MOD-02, DEC-09)
   - **Acceptance Criteria:** Bundles under 30KB gzipped; handles WebSocket and polling fallback; respects brand colors (`#00A0F0`, `#0030A0`).
   - **Required Tests:** Component unit tests with Vitest; bundle size check.
   - **Dependencies:** TASK-011, TASK-027
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-031: Embed Loader Script (`widget.js`) & Iframe Host Isolation**
