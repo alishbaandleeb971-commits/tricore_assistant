@@ -15,6 +15,45 @@ export interface DispatchResult {
   error?: string;
 }
 
+export interface CapturedDispatch {
+  type: "email" | "slack";
+  toOrUrl: string;
+  subjectOrText: string;
+  body?: string;
+  capturedAt: number;
+}
+
+export const capturedDispatches: CapturedDispatch[] = [];
+
+export function clearCapturedDispatches(): void {
+  capturedDispatches.length = 0;
+}
+
+export const fakeEmailSend = async (to: string, subject: string, body: string): Promise<boolean> => {
+  capturedDispatches.push({
+    type: "email",
+    toOrUrl: to,
+    subjectOrText: subject,
+    body,
+    capturedAt: Date.now()
+  });
+  return true;
+};
+
+export const fakeSlackPost = async (webhookUrl: string, payload: unknown): Promise<boolean> => {
+  const text =
+    typeof payload === "object" && payload !== null && "text" in payload
+      ? String((payload as { text: unknown }).text)
+      : JSON.stringify(payload);
+  capturedDispatches.push({
+    type: "slack",
+    toOrUrl: webhookUrl,
+    subjectOrText: text,
+    capturedAt: Date.now()
+  });
+  return true;
+};
+
 export async function dispatchNotification(
   payloadStr: string,
   adapters?: {

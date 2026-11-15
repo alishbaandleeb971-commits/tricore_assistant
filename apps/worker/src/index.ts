@@ -3,6 +3,8 @@ import { sessionsRouter } from "./routes/sessions.js";
 import { callbackRouter } from "./routes/callback.js";
 import { staffRouter } from "./routes/staff.js";
 import { knowledgeRouter } from "./routes/knowledge.js";
+import { processQueueBatch } from "./services/dispatcher.js";
+import { runCronSweep } from "./services/cronSweep.js";
 
 export type Env = {
   Bindings: {
@@ -63,5 +65,16 @@ app.notFound(async (c) => {
 });
 
 export { ConversationDO, StaffHubDO } from "./durable/conversation.js";
+export { app };
 
-export default app;
+const handler = {
+  fetch: (request: Request, env: Env["Bindings"], ctx?: ExecutionContext) => app.fetch(request, env, ctx),
+  async queue(batch: MessageBatch<unknown>, env: Env["Bindings"]): Promise<void> {
+    await processQueueBatch(batch, env.DB);
+  },
+  async scheduled(event: ScheduledEvent, env: Env["Bindings"]): Promise<void> {
+    await runCronSweep(env.DB, env.NOTIFY);
+  }
+};
+
+export default handler;

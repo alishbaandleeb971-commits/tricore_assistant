@@ -42,6 +42,9 @@ export class ConversationDO {
   }
 
   async alarm(): Promise<void> {
+    if (this.state.storage?.deleteAlarm) {
+      await this.state.storage.deleteAlarm().catch(() => {});
+    }
     // 3-minute handover timeout alarm fired
     if (this.activeHandoverId) {
       await this.env.DB.prepare(
@@ -116,6 +119,25 @@ export class ConversationDO {
       }
       const res = await this.handleTurn(body);
       return new Response(JSON.stringify(res), {
+        status: 200,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
+    if (url.pathname.endsWith("/handover") && request.method === "POST") {
+      const body = (await request.json().catch(() => ({}))) as { sessionId?: string; conversationId?: string };
+      if (body.sessionId) this.sessionId = body.sessionId;
+      if (body.conversationId) this.conversationId = body.conversationId;
+      const ho = await this.requestHandover();
+      return new Response(JSON.stringify(ho), {
+        status: 200,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
+    if (url.pathname.endsWith("/alarm") && request.method === "POST") {
+      await this.alarm();
+      return new Response(JSON.stringify({ status: "alarm_fired" }), {
         status: 200,
         headers: { "Content-Type": "application/json" }
       });
