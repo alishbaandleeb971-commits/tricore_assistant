@@ -308,14 +308,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-032: Cloudflare Access JWT Verification Middleware**
+- [x] **TASK-032: Cloudflare Access JWT Verification Middleware**
   - **Description:** Implement `MOD-13` middleware verifying `Cf-Access-Jwt-Assertion` header on all `/api/v1/staff/*` routes. Maps email to `staff_user` record and enforces RBAC (`Staff` vs `Admin`).
   - **Related SRS Requirement:** FR-085, FR-086, FR-087, NFR-010, NFR-011, §4.2 Permission Matrix
   - **Related SDD Section:** SDD §9.2, §9.3, §9.4 (MOD-13, DEC-B05)
   - **Acceptance Criteria:** Unauthenticated requests receive 401; unauthorized roles receive 403; local dev bypass allows testing with mock header.
   - **Required Tests:** Route permission test matrix covering all staff endpoints across Admin, Staff, and unauthenticated roles.
   - **Dependencies:** TASK-005
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-033: Staff App Shell & Navigation Layout (`apps/staff`)**
