@@ -136,14 +136,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-014: Provider-Independent Model Gateway with Fake Provider**
+- [x] **TASK-014: Provider-Independent Model Gateway with Fake Provider**
   - **Description:** Implement `MOD-06` gateway supporting structured JSON outputs (AI-1 result schema) and a deterministic Fake Model Provider for testing.
   - **Related SRS Requirement:** AIR-010, AIR-013
   - **Related SDD Section:** SDD §4.2, §4.3 (MOD-06)
   - **Acceptance Criteria:** Validates AI-1 response schema with Zod; retries once on malformed JSON; tracks token usage and latency.
   - **Required Tests:** Gateway unit tests with mock responses (valid, invalid JSON, timeout).
   - **Dependencies:** TASK-001
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-015: AI Monthly Budget Gate & Spend Tracking**
