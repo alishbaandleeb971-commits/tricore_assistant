@@ -448,14 +448,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-054: Daily R2 Backup Workflow (GitHub Actions)**
+- [x] **TASK-054: Daily R2 Backup Workflow (GitHub Actions)**
   - **Description:** Create `.github/workflows/backup.yml` running daily at 02:00 PKT (21:00 UTC) executing D1 export, encrypting dump, and storing in R2 bucket with 14-day retention.
   - **Related SRS Requirement:** FR-165, FR-166, FR-167, DR-021
   - **Related SDD Section:** SDD §17.5 (DEC-B07)
   - **Acceptance Criteria:** Automated workflow exports D1, encrypts payload, and uploads to R2; test restore completes within 2 hours (RTO).
   - **Required Tests:** End-to-end backup export and trial restore test.
   - **Dependencies:** TASK-005
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-055: Staging Deployment & Real Model Benchmark**
