@@ -146,14 +146,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-015: AI Monthly Budget Gate & Spend Tracking**
+- [x] **TASK-015: AI Monthly Budget Gate & Spend Tracking**
   - **Description:** Implement `MOD-12` budget gate using atomic updates on `spend_month`. Enforces $100 cap and queues 80% warning alert.
   - **Related SRS Requirement:** BR-025, FR-158, FR-159, FR-160
   - **Related SDD Section:** SDD §15.1, §15.3 (MOD-12)
   - **Acceptance Criteria:** Rejection of calls when monthly spend exceeds limit; switch to `DetailsOnly` mode; atomic reservation prevents overspend across concurrent chats.
   - **Required Tests:** Unit tests testing reservation, spend increment, 80% warning trigger, and 100% hard stop.
   - **Dependencies:** TASK-005, TASK-014
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-016: Deterministic Answer Guard (Zero Pricing & Grounding)**
