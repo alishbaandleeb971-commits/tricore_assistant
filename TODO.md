@@ -338,14 +338,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-035: Staff Leads Table & Browser CSV Export**
+- [x] **TASK-035: Staff Leads Table & Browser CSV Export**
   - **Description:** Build leads management screen displaying leads, priority badges (Hot/Warm/Cold), conversation links, date filter, and browser-side CSV generation with formula injection protection.
   - **Related SRS Requirement:** FR-103, FR-106, FR-107, FR-109
   - **Related SDD Section:** SDD §3.2, §12.5 (MOD-03, MOD-13)
   - **Acceptance Criteria:** Leads table renders paginated rows; CSV builds entirely in browser with sanitized formula prefixes (`=`, `+`, `-`, `@`); UTF-8 BOM included.
   - **Required Tests:** CSV export generator unit test with formula strings and special characters.
   - **Dependencies:** TASK-023, TASK-033
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-036: Staff Live Chat Console**
