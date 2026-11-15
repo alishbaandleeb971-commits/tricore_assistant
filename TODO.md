@@ -222,14 +222,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-024: Queue Consumer & Notification Dispatcher (Email & Slack)**
+- [x] **TASK-024: Queue Consumer & Notification Dispatcher (Email & Slack)**
   - **Description:** Implement `queue()` handler in Worker processing outbox rows with retries and exponential backoff. Integrate Cloudflare Email Service and Slack webhook adapters.
   - **Related SRS Requirement:** FR-058, FR-059, FR-060, FR-061, FR-065, EXC-009, EXC-010
   - **Related SDD Section:** SDD §10.5 (MOD-11)
   - **Acceptance Criteria:** Formats email and Slack message from template; flags Hot leads with `🔥 HOT LEAD`; retries failed deliveries up to 5 times.
   - **Required Tests:** Worker queue tests with fake email and Slack adapters; verify status updates to `sent` or `undeliverable`.
   - **Dependencies:** TASK-023
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-025: Every-Minute Cron Trigger Sweep**
