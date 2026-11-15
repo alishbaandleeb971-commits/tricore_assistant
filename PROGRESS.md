@@ -14,10 +14,10 @@
 |:---|:---|:---|:---|:---|
 | **G0** | Documentation & Control Setup | Setup deliverables | **Completed** | Approved by Alishba |
 | **G1** | Foundation and Data | TASK-001 to TASK-008 | **Completed** | Pending Alishba Gate Approval (Live verified) |
-| **G2** | Assistant Core | TASK-010 to TASK-017 | **Completed** | NOT Approved (Pending G2 Gate Review) |
-| **G3** | Worker API & State Machines | TASK-020 to TASK-029 | **Completed** | NOT Approved (Pending G3 Gate Review) |
-| **G4** | Chatbot Widget (Preact) & Staff App | TASK-030 to TASK-038 | **In Progress** | NOT Approved (UI views stubbed; Widget uses mock timer) |
-| **G5** | Hardening and Staging | TASK-039 to TASK-054 | **In Progress** | NOT Approved (Playwright tests missing; Staging blocked) |
+| **G2** | Assistant Core | TASK-010 to TASK-017 | **Completed** | Pending Alishba Gate Approval (Live HTTP & D1 verified) |
+| **G3** | Worker API & State Machines | TASK-020 to TASK-029 | **In Progress** | NOT Approved (Queue/Cron/WebSocket exports pending) |
+| **G4** | Chatbot Widget (Preact) & Staff App | TASK-030 to TASK-038 | **In Progress** | NOT Approved (Widget API wired; Staff React UI screens stubbed) |
+| **G5** | Hardening and Staging | TASK-039 to TASK-054 | **In Progress** | NOT Approved (Playwright tests missing; Audit tests incomplete) |
 | **G6** | Launch & Production Setup | TASK-060 to TASK-063 | **Not Started** | Locked (Awaiting content, credentials, and gates) |
 
 ---

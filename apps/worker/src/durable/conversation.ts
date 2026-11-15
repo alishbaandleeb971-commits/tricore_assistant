@@ -104,7 +104,16 @@ export class ConversationDO {
   async fetch(request: Request): Promise<Response> {
     const url = new URL(request.url);
     if (url.pathname.endsWith("/turn") && request.method === "POST") {
-      const body = (await request.json()) as ConversationTurnRequest;
+      const body = (await request.json()) as ConversationTurnRequest & { sessionId?: string; conversationId?: string };
+      if (body.sessionId) {
+        this.sessionId = body.sessionId;
+      }
+      if (body.conversationId) {
+        this.conversationId = body.conversationId;
+      }
+      if (!this.conversationId) {
+        this.conversationId = uuidv7();
+      }
       const res = await this.handleTurn(body);
       return new Response(JSON.stringify(res), {
         status: 200,

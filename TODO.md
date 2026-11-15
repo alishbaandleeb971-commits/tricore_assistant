@@ -222,24 +222,24 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [x] **TASK-024: Queue Consumer & Notification Dispatcher (Email & Slack)**
+- [ ] **TASK-024: Queue Consumer & Notification Dispatcher (Email & Slack)**
   - **Description:** Implement `queue()` handler in Worker processing outbox rows with retries and exponential backoff. Integrate Cloudflare Email Service and Slack webhook adapters.
   - **Related SRS Requirement:** FR-058, FR-059, FR-060, FR-061, FR-065, EXC-009, EXC-010
   - **Related SDD Section:** SDD §10.5 (MOD-11)
   - **Acceptance Criteria:** Formats email and Slack message from template; flags Hot leads with `🔥 HOT LEAD`; retries failed deliveries up to 5 times.
   - **Required Tests:** Worker queue tests with fake email and Slack adapters; verify status updates to `sent` or `undeliverable`.
   - **Dependencies:** TASK-023
-  - **Status:** Done
+  - **Status:** In progress (handler module written; needs export in Worker entry point and live queue verification)
   - **Blocking TBDs:** None
 
-- [x] **TASK-025: Every-Minute Cron Trigger Sweep**
+- [ ] **TASK-025: Every-Minute Cron Trigger Sweep**
   - **Description:** Implement `scheduled()` handler in Worker running every minute (`* * * * *`) to re-queue stuck outbox rows older than 2 minutes, check handover timeouts, and write heartbeat.
   - **Related SRS Requirement:** NFR-008, EXC-011
   - **Related SDD Section:** SDD §10.5, §11.3, §16.2 (MOD-16)
   - **Acceptance Criteria:** Cron sweep recovers pending outbox rows; writes heartbeat to `job_run`.
   - **Required Tests:** Test scheduled event execution and recovery of simulated dropped outbox messages.
   - **Dependencies:** TASK-024
-  - **Status:** Done
+  - **Status:** In progress (handler module written; needs export in Worker entry point and live cron trigger verification)
   - **Blocking TBDs:** None
 
 - [x] **TASK-026: Working Hours Evaluator (PKT Timezone Math)**
@@ -252,24 +252,24 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [x] **TASK-027: Handover Durable Object Alarm & 3-Minute Timer**
+- [ ] **TASK-027: Handover Durable Object Alarm & 3-Minute Timer**
   - **Description:** Implement `MOD-10` handover initiation in `Conversation` DO. Sets DO alarm for `now + 180 seconds`. If unaccepted when alarm fires, transitions to callback form.
   - **Related SRS Requirement:** FR-069, FR-072, FR-073, EXC-013
   - **Related SDD Section:** SDD §11.2, §11.3 (MOD-10, DEC-B04)
   - **Acceptance Criteria:** DO alarm triggers at 180s; cancels alarm if staff accepts; transitions to `TIMED_OUT` and renders callback form.
   - **Required Tests:** Alarm unit test in Workers test pool verifying timer fires callback transition at exactly 180s.
   - **Dependencies:** TASK-017, TASK-026
-  - **Status:** Done
+  - **Status:** In progress (DO alarm written; needs live end-to-end handover test)
   - **Blocking TBDs:** None
 
-- [x] **TASK-028: Durable Object `StaffHub` & WebSocket Live Relay**
+- [ ] **TASK-028: Durable Object `StaffHub` & WebSocket Live Relay**
   - **Description:** Implement singleton `StaffHub` DO broadcasting waiting handovers to staff sockets. Connects staff operator to visitor `Conversation` DO for two-way live chat with WebSocket Hibernation.
   - **Related SRS Requirement:** FR-075, FR-076, FR-105, FR-110, IR-002
   - **Related SDD Section:** SDD §11.4 (MOD-10, DEC-B03)
   - **Acceptance Criteria:** First staff member to accept claims chat; AI remains silent during live chat; messages relay bi-directionally; disconnect handled cleanly.
   - **Required Tests:** End-to-end WebSocket relay test between simulated visitor and staff connections.
   - **Dependencies:** TASK-027
-  - **Status:** Done
+  - **Status:** In progress (needs `/api/v1/staff/ws` endpoint and live WebSocket relay)
   - **Blocking TBDs:** None
 
 - [x] **TASK-029: Callback Request Form Intake**
@@ -388,14 +388,14 @@
   - **Status:** In progress
   - **Blocking TBDs:** None
 
-- [x] **TASK-040: Scheduled Data Retention Job (`03:00 PKT`)**
+- [ ] **TASK-040: Scheduled Data Retention Job (`03:00 PKT`)**
   - **Description:** Implement daily retention cleanup in Worker scheduled handler (`0 22 * * *` UTC / 03:00 PKT). Deletes expired chats (>90 days) and leads (>12 mos) in batches of 500 rows.
   - **Related SRS Requirement:** BR-027, FR-152, FR-153, DR-020
   - **Related SDD Section:** SDD §7.4, §16.2 (MOD-16)
   - **Acceptance Criteria:** Deletes records in 500-row batches; logs count in `deletion_log`; never deletes active or unexpired records.
   - **Required Tests:** Time-travel test verifying expired records deleted and active records preserved.
   - **Dependencies:** TASK-005, TASK-025
-  - **Status:** Done
+  - **Status:** In progress (function written; needs Worker scheduled export and cron test)
   - **Blocking TBDs:** None
 
 ---
@@ -404,34 +404,34 @@
 
 **Gate G5 Deliverable:** 5 practice chats pass on staging; 50-question benchmark run with real model passes (>=45/50); CPU budget confirmed.
 
-- [x] **TASK-050: Comprehensive Exception Handling (EXC-001–EXC-026)**
+- [ ] **TASK-050: Comprehensive Exception Handling (EXC-001–EXC-026)**
   - **Description:** Implement and verify all 26 exception scenarios from SRS Section 11 and SDD §14.3 (AI provider failure, circuit breaker, D1 downtime fallback, outbox failure).
   - **Related SRS Requirement:** EXC-001–EXC-026, AC-092
   - **Related SDD Section:** SDD §14.2, §14.3
   - **Acceptance Criteria:** Every exception scenario triggers polite visitor-safe fallback and appropriate developer alert.
   - **Required Tests:** Automated exception injection test suite covering all 26 scenarios.
   - **Dependencies:** Stages G1–G4
-  - **Status:** Done
+  - **Status:** In progress (2 of 26 scenarios tested)
   - **Blocking TBDs:** None
 
-- [x] **TASK-051: Pre-Launch Security & Authorization Audit**
+- [ ] **TASK-051: Pre-Launch Security & Authorization Audit**
   - **Description:** Execute security test suite verifying OWASP Top 10 defenses, Access JWT validation, SQL injection prevention, Turnstile enforcement, PII masking, and strict CORS.
   - **Related SRS Requirement:** NFR-010, NFR-011, NFR-013, NFR-014, AC-087
   - **Related SDD Section:** SDD §13.1, §13.6, §16.6
   - **Acceptance Criteria:** Zero security regressions; 100% of staff routes reject unauthenticated requests; zero PII in logs or DB.
   - **Required Tests:** Security penetration and authorization fuzzing test suite.
   - **Dependencies:** TASK-050
-  - **Status:** Done
+  - **Status:** In progress (2 tests exist; XSS, CORS, Access signatures, jailbreaks missing)
   - **Blocking TBDs:** None
 
-- [x] **TASK-052: CPU Budget & Free-Tier Quota Monitor**
+- [ ] **TASK-052: CPU Budget & Free-Tier Quota Monitor**
   - **Description:** Validate p99 CPU duration across all routes in staging. Implement hourly usage watch cron checking Cloudflare API and alerting at 60% of any daily cap.
   - **Related SRS Requirement:** NFR-004, NFR-017
   - **Related SDD Section:** SDD §2.4, §2.6, §14.3a, §14.6
   - **Acceptance Criteria:** p99 CPU remains under 7 ms across all endpoints; usage snapshot logs hourly metrics.
   - **Required Tests:** Performance benchmarking test with simulated concurrent load.
   - **Dependencies:** TASK-050
-  - **Status:** Done
+  - **Status:** In progress (needs hourly cron export and live staging metrics)
   - **Blocking TBDs:** None
 
 - [ ] **TASK-053: Playwright End-to-End Test Suite**

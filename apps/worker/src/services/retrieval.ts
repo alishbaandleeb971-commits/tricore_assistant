@@ -11,12 +11,25 @@ export async function retrieveKnowledgeChunks(
   query: string,
   limit = 4
 ): Promise<RetrievedChunk[]> {
-  const sanitized = query
+  const STOP_WORDS = new Set([
+    "a", "an", "the", "and", "or", "in", "on", "at", "to", "for", "of", "with",
+    "by", "from", "up", "about", "into", "over", "after", "is", "are", "was",
+    "were", "be", "been", "being", "have", "has", "had", "do", "does", "did",
+    "can", "could", "will", "would", "shall", "should", "may", "might", "must",
+    "i", "you", "he", "she", "it", "we", "they", "what", "which", "who", "when",
+    "where", "why", "how", "all", "any", "both", "each", "few", "more", "most",
+    "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so",
+    "than", "too", "very", "s", "t", "just", "don", "shouldn", "now"
+  ]);
+
+  const words = query
     .replace(/[^\w\s]/g, " ")
     .trim()
     .split(/\s+/)
-    .filter((w) => w.length > 1)
-    .join(" OR ");
+    .map((w) => w.trim())
+    .filter((w) => w.length > 1 && !STOP_WORDS.has(w.toLowerCase()));
+
+  const sanitized = words.length > 0 ? words.join(" OR ") : "";
 
   if (!sanitized) {
     return [];

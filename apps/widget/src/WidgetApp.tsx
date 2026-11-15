@@ -1,4 +1,4 @@
-import { useState } from "preact/hooks";
+import { useState, useEffect } from "preact/hooks";
 
 export interface MessageItem {
   id: string;
@@ -16,25 +16,98 @@ export function WidgetApp() {
   ]);
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Initialize live session on mount
+  useEffect(() => {
+    async function initSession() {
+      try {
+        const res = await fetch("/api/v1/public/sessions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: "widget-client-token" })
+        });
+        if (res.ok) {
+          const data = (await res.json()) as { sessionId: string; greeting?: string };
+          setSessionId(data.sessionId);
+          if (data.greeting) {
+            setMessages([
+              {
+                id: "init",
+                sender: "assistant",
+                text: data.greeting
+              }
+            ]);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to init session:", err);
+      }
+    }
+    initSession();
+  }, []);
 
   const sendMessage = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || isLoading) return;
 
     const userText = input.trim();
     setInput("");
-    setMessages((prev) => [...prev, { id: String(Date.now()), sender: "visitor", text: userText }]);
+    const visitorMsgId = String(Date.now());
+    setMessages((prev) => [...prev, { id: visitorMsgId, sender: "visitor", text: userText }]);
+    setIsLoading(true);
 
-    // Simulated reply or API fetch
-    setTimeout(() => {
+    try {
+      let activeSessionId = sessionId;
+      if (!activeSessionId) {
+        const initRes = await fetch("/api/v1/public/sessions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: "widget-client-token" })
+        });
+        const initData = (await initRes.json()) as { sessionId: string };
+        activeSessionId = initData.sessionId;
+        setSessionId(activeSessionId);
+      }
+
+      const res = await fetch(`/api/v1/public/sessions/${activeSessionId}/messages`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: userText })
+      });
+
+      if (res.ok) {
+        const data = (await res.json()) as { reply: string; messageId?: string };
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: data.messageId || String(Date.now() + 1),
+            sender: "assistant",
+            text: data.reply
+          }
+        ]);
+      } else {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: String(Date.now() + 1),
+            sender: "system",
+            text: "Sorry, we could not deliver your message. Please try again."
+          }
+        ]);
+      }
+    } catch {
       setMessages((prev) => [
         ...prev,
         {
           id: String(Date.now() + 1),
-          sender: "assistant",
-          text: "Thank you for reaching out! A specialist will assist you with tailored solutions."
+          sender: "system",
+          text: "Connection error. Please check your internet connection."
         }
       ]);
-    }, 100);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
