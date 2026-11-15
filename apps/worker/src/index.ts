@@ -51,6 +51,17 @@ app.route("/api/v1/public/sessions", callbackRouter);
 app.route("/api/v1/staff", staffRouter);
 app.route("/api/v1/staff/knowledge", knowledgeRouter);
 
+// Serve static assets for widget and staff portal
+app.get("/widget", (c) => c.redirect("/widget/", 301));
+app.get("/staff", (c) => c.redirect("/staff/", 301));
+
+app.notFound(async (c) => {
+  if (c.env.ASSETS) {
+    return c.env.ASSETS.fetch(c.req.raw);
+  }
+  return c.text("Not Found", 404);
+});
+
 export { ConversationDO, StaffHubDO } from "./durable/conversation.js";
 
 export default app;

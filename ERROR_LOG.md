@@ -36,3 +36,14 @@
   3. Rate limiting is enforced via Turnstile tokens and session identifiers, never stored IP hashes.
 - **Status:** Prevented / Enforced in `DECISIONS.md` and `PROJECT_BRIEF.md`.
 
+### ERR-004: Wrangler 3.86.0 Ignored wrangler.jsonc Without Flags
+- **Discovered During:** G1 Gate Audit check.
+- **Issue:** Running `npx wrangler dev` failed with "Missing entry-point: The entry-point should be specified via the command line or the `main` config field." and `npx wrangler d1 migrations apply DB --local` printed nothing at all.
+- **Root Cause:** Wrangler 3.86.0 only detected `wrangler.toml` by default; it ignored `wrangler.jsonc` unless explicitly passed via `-c wrangler.jsonc`. In addition, runtime compatibility date fell back to `2024-10-22`.
+- **Resolution / Prevention Rule:**
+  1. Upgrade to modern `wrangler@4` which supports `wrangler.jsonc` natively.
+  2. Upgrade `@cloudflare/workers-types`, `@cloudflare/vitest-pool-workers`, and `vitest` to compatible pinned versions.
+  3. Set compatibility date to current (`2024-11-12`).
+  4. Ensure root scripts (`npm run dev`, `npm run db:migrate:local`, `npm run db:seed:local`) are present and tested.
+- **Status:** Fixed.
+
