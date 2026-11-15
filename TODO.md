@@ -50,14 +50,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-005: Full D1 Database Schema & Drizzle Definitions**
+- [x] **TASK-005: Full D1 Database Schema & Drizzle Definitions**
   - **Description:** Implement complete Drizzle schema in `apps/worker/src/db/schema.ts` defining all 25 tables from SDD §7.1 and §7.2 (conversations, messages, leads, consent, handovers, callbacks, notifications, ai_usage, settings, etc.) with foreign keys, checks, and time stored in UTC milliseconds.
   - **Related SRS Requirement:** DR-001–DR-024
   - **Related SDD Section:** SDD §7.1, §7.2, §7.3 (DEC-B02)
   - **Acceptance Criteria:** Drizzle schema matches SDD §7.1 exactly; no IP address columns exist; secondary indexes match §12.4.
   - **Required Tests:** Schema unit tests validating column types, non-null constraints, and relations.
   - **Dependencies:** TASK-001
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-006: D1 Migration 0001 & FTS5 Virtual Tables**
