@@ -212,14 +212,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-023: Atomic D1 Outbox & Notification Job Enqueueing**
+- [x] **TASK-023: Atomic D1 Outbox & Notification Job Enqueueing**
   - **Description:** Write lead, lead services, consent link, and notification rows (`notification` table) in a single atomic D1 batch. Send message to `notifications` Queue.
   - **Related SRS Requirement:** FR-046, FR-056, FR-058, NFR-007
   - **Related SDD Section:** SDD §10.5 (MOD-09, MOD-11, DEC-B06)
   - **Acceptance Criteria:** Atomicity guaranteed: rollback of lead cancels notification; notification dedupe key prevents duplicate entries.
   - **Required Tests:** Integration test verifying atomic write of lead and outbox rows.
   - **Dependencies:** TASK-022
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-024: Queue Consumer & Notification Dispatcher (Email & Slack)**
