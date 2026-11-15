@@ -428,14 +428,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-052: CPU Budget & Free-Tier Quota Monitor**
+- [x] **TASK-052: CPU Budget & Free-Tier Quota Monitor**
   - **Description:** Validate p99 CPU duration across all routes in staging. Implement hourly usage watch cron checking Cloudflare API and alerting at 60% of any daily cap.
   - **Related SRS Requirement:** NFR-004, NFR-017
   - **Related SDD Section:** SDD §2.4, §2.6, §14.3a, §14.6
   - **Acceptance Criteria:** p99 CPU remains under 7 ms across all endpoints; usage snapshot logs hourly metrics.
   - **Required Tests:** Performance benchmarking test with simulated concurrent load.
   - **Dependencies:** TASK-050
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-053: Playwright End-to-End Test Suite**
