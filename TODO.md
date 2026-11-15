@@ -318,14 +318,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-033: Staff App Shell & Navigation Layout (`apps/staff`)**
+- [x] **TASK-033: Staff App Shell & Navigation Layout (`apps/staff`)**
   - **Description:** Initialize React + Vite + Tailwind SPA in `apps/staff` with responsive sidebar navigation, Access identity header (`GET /staff/me`), and route guards.
   - **Related SRS Requirement:** FR-085, IR-002
   - **Related SDD Section:** SDD §3.2 (MOD-03, DEC-10)
   - **Acceptance Criteria:** Static export builds cleanly; navigation displays allowed screens based on user role; times format in PKT.
   - **Required Tests:** Component render and routing tests.
   - **Dependencies:** TASK-032
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-034: Staff Knowledge Management Screen & Release Flow**
