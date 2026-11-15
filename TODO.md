@@ -116,14 +116,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-012: In-Memory / Edge Rate Limiter (Session & Daily Counters)**
+- [x] **TASK-012: In-Memory / Edge Rate Limiter (Session & Daily Counters)**
   - **Description:** Implement rate limiting using `rate_counter` table in D1 and edge rule headers (10 msg/min, 40 msg/session, 1,000 chars/msg). Zero visitor IP storage.
   - **Related SRS Requirement:** FR-149, FR-164, EXC-026
   - **Related SDD Section:** SDD §7.2, §13.4, §15.4 (MOD-04, TBD-68)
   - **Acceptance Criteria:** Exceeding 10 msg/min returns 429 with `Retry-After`; messages >1,000 characters return 413.
   - **Required Tests:** Test flood of requests verifying 429 response; message length boundary tests.
   - **Dependencies:** TASK-011
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-013: SQLite FTS5 Knowledge Retrieval Service**
