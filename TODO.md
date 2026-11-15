@@ -252,14 +252,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-027: Handover Durable Object Alarm & 3-Minute Timer**
+- [x] **TASK-027: Handover Durable Object Alarm & 3-Minute Timer**
   - **Description:** Implement `MOD-10` handover initiation in `Conversation` DO. Sets DO alarm for `now + 180 seconds`. If unaccepted when alarm fires, transitions to callback form.
   - **Related SRS Requirement:** FR-069, FR-072, FR-073, EXC-013
   - **Related SDD Section:** SDD §11.2, §11.3 (MOD-10, DEC-B04)
   - **Acceptance Criteria:** DO alarm triggers at 180s; cancels alarm if staff accepts; transitions to `TIMED_OUT` and renders callback form.
   - **Required Tests:** Alarm unit test in Workers test pool verifying timer fires callback transition at exactly 180s.
   - **Dependencies:** TASK-017, TASK-026
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-028: Durable Object `StaffHub` & WebSocket Live Relay**
