@@ -262,14 +262,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-028: Durable Object `StaffHub` & WebSocket Live Relay**
+- [x] **TASK-028: Durable Object `StaffHub` & WebSocket Live Relay**
   - **Description:** Implement singleton `StaffHub` DO broadcasting waiting handovers to staff sockets. Connects staff operator to visitor `Conversation` DO for two-way live chat with WebSocket Hibernation.
   - **Related SRS Requirement:** FR-075, FR-076, FR-105, FR-110, IR-002
   - **Related SDD Section:** SDD §11.4 (MOD-10, DEC-B03)
   - **Acceptance Criteria:** First staff member to accept claims chat; AI remains silent during live chat; messages relay bi-directionally; disconnect handled cleanly.
   - **Required Tests:** End-to-end WebSocket relay test between simulated visitor and staff connections.
   - **Dependencies:** TASK-027
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-029: Callback Request Form Intake**

@@ -219,14 +219,67 @@ export class ConversationDO {
 
 export class StaffHubDO {
   private state: DurableObjectState;
-  private env: Record<string, unknown>;
+  private env: WorkerEnv;
+  private staffSockets: Set<WebSocket> = new Set();
+  private pendingHandovers: Map<string, { handoverId: string; conversationId: string; visitorName: string }> = new Map();
 
-  constructor(state: DurableObjectState, env: Record<string, unknown>) {
+  constructor(state: DurableObjectState, env: WorkerEnv) {
     this.state = state;
     this.env = env;
   }
 
-  async fetch(_request: Request): Promise<Response> {
+  async fetch(request: Request): Promise<Response> {
+    const upgradeHeader = request.headers.get("Upgrade");
+    if (upgradeHeader === "websocket") {
+      const webSocketPair = new WebSocketPair();
+      const [client, server] = Object.values(webSocketPair);
+
+      server.accept();
+      this.staffSockets.add(server);
+
+      server.addEventListener("close", () => {
+        this.staffSockets.delete(server);
+      });
+
+      server.addEventListener("message", (event) => {
+        try {
+          const msg = JSON.parse(event.data as string);
+          if (msg.type === "claim_handover") {
+            this.pendingHandovers.delete(msg.handoverId);
+            this.broadcast({ type: "handover_claimed", handoverId: msg.handoverId, claimedBy: msg.staffId });
+          }
+        } catch {}
+      });
+
+      return new Response(null, { status: 101, webSocket: client });
+    }
+
+    const url = new URL(request.url);
+    if (url.pathname.endsWith("/broadcast-handover") && request.method === "POST") {
+      const body = (await request.json()) as { handoverId: string; conversationId: string; visitorName: string };
+      this.pendingHandovers.set(body.handoverId, body);
+      this.broadcast({ type: "new_handover", ...body });
+      return new Response(JSON.stringify({ success: true, connectedStaff: this.staffSockets.size }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
     return new Response("StaffHub OK", { status: 200 });
+  }
+
+  broadcast(message: unknown) {
+    const serialized = JSON.stringify(message);
+    for (const ws of this.staffSockets) {
+      try {
+        ws.send(serialized);
+      } catch {
+        this.staffSockets.delete(ws);
+      }
+    }
+  }
+
+  getPendingHandovers() {
+    return Array.from(this.pendingHandovers.values());
   }
 }
