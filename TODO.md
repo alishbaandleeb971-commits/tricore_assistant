@@ -96,14 +96,14 @@
 
 **Gate G2 Deliverable:** A scripted chat in the terminal answers questions from dummy content and refuses to invent prices.
 
-- [ ] **TASK-010: PII Masking Engine (Card & Password Sanitization)**
+- [x] **TASK-010: PII Masking Engine (Card & Password Sanitization)**
   - **Description:** Implement `MOD-04` regex masking engine replacing credit card numbers (Luhn check) and password-like sequences with `[hidden]`.
   - **Related SRS Requirement:** FR-147, DR-022, AIR-015
   - **Related SDD Section:** SDD §13.3 (MOD-04)
   - **Acceptance Criteria:** Masking runs in-memory before storage or AI calls; passes positive and negative test fixture suite; zero false drops on normal text.
   - **Required Tests:** Unit tests covering card numbers, separators, passwords, and innocent phone/order numbers.
   - **Dependencies:** TASK-001
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-011: Public Sessions API & Turnstile Verification**
