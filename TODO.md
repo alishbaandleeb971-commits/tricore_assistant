@@ -202,14 +202,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-022: Pure Function Lead Scoring (Hot / Warm / Cold)**
+- [x] **TASK-022: Pure Function Lead Scoring (Hot / Warm / Cold)**
   - **Description:** Implement deterministic scoring function calculating priority: Hot (Phone + Budget >= threshold + Timeline <= 3 mos); Warm (Name + Email + Service); Cold (others).
   - **Related SRS Requirement:** BR-004, BR-005, BR-006, BR-007, FR-053, FR-054
   - **Related SDD Section:** SDD §10.3 (MOD-09)
   - **Acceptance Criteria:** Pure logic test passes full truth table; uses dev/staging dummy threshold ($2,000 / Rs 500,000) when production threshold is unset.
   - **Required Tests:** Comprehensive truth table unit test covering all scoring combinations.
   - **Dependencies:** TASK-021
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-023: Atomic D1 Outbox & Notification Job Enqueueing**

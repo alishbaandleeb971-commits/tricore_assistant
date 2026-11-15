@@ -1,5 +1,6 @@
 export * from "./masking.js";
 export * from "./leadIntake.js";
+export * from "./leadScoring.js";
 import { z } from "zod";
 
 export const ServiceNameSchema = z.enum([
