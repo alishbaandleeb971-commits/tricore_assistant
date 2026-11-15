@@ -192,14 +192,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-021: Conversational Lead Intake & Validation**
+- [x] **TASK-021: Conversational Lead Intake & Validation**
   - **Description:** Implement scripted lead collection flow: Name, Email, Service (Required); Phone, Currency, Budget Range, Timeline, Description (Optional).
   - **Related SRS Requirement:** FR-040, FR-041, FR-042, FR-043, FR-044, FR-051
   - **Related SDD Section:** SDD §10.1, §10.2 (MOD-09)
   - **Acceptance Criteria:** Validates email and phone; accepts skips for optional fields; shows confirmation recap before saving.
   - **Required Tests:** Intake tests with complete data, skipped fields, invalid email retry, and recap confirmation.
   - **Dependencies:** TASK-020
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-022: Pure Function Lead Scoring (Hot / Warm / Cold)**
