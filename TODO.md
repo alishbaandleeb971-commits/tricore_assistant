@@ -418,14 +418,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-051: Pre-Launch Security & Authorization Audit**
+- [x] **TASK-051: Pre-Launch Security & Authorization Audit**
   - **Description:** Execute security test suite verifying OWASP Top 10 defenses, Access JWT validation, SQL injection prevention, Turnstile enforcement, PII masking, and strict CORS.
   - **Related SRS Requirement:** NFR-010, NFR-011, NFR-013, NFR-014, AC-087
   - **Related SDD Section:** SDD §13.1, §13.6, §16.6
   - **Acceptance Criteria:** Zero security regressions; 100% of staff routes reject unauthenticated requests; zero PII in logs or DB.
   - **Required Tests:** Security penetration and authorization fuzzing test suite.
   - **Dependencies:** TASK-050
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-052: CPU Budget & Free-Tier Quota Monitor**
