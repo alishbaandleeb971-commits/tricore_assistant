@@ -382,14 +382,14 @@
   - **Status:** Not started
   - **Blocking TBDs:** None
 
-- [ ] **TASK-039: 50-Question Benchmark Test Runner UI & CLI**
+- [x] **TASK-039: 50-Question Benchmark Test Runner UI & CLI**
   - **Description:** Build automated test harness executing 50 questions against assistant (1 question per request to respect 10 ms CPU), scoring accuracy and pass/fail mark (>=45/50).
   - **Related SRS Requirement:** FR-130–FR-134, BR-021, BR-022, RAC-02
   - **Related SDD Section:** SDD §3.2, §16.3 (MOD-15)
   - **Acceptance Criteria:** Runs all 50 questions; records judgements, score, and pass/fail; generates audit record.
   - **Required Tests:** Test runner integration test against fake model provider.
   - **Dependencies:** TASK-017, TASK-033
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-040: Scheduled Data Retention Job (`03:00 PKT`)**
