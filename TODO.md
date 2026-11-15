@@ -272,14 +272,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-029: Callback Request Form Intake**
+- [x] **TASK-029: Callback Request Form Intake**
   - **Description:** Implement `POST /api/v1/public/sessions/{id}/callback` storing callback details, creating a lead with `source = callback`, and enqueueing urgent sales alert.
   - **Related SRS Requirement:** FR-078, FR-079, FR-129, DR-006
   - **Related SDD Section:** SDD §10.6, §11.2 (MOD-10)
   - **Acceptance Criteria:** Saves callback row in D1; creates linked lead record; enqueues outbox alert.
   - **Required Tests:** API test submitting callback; verify DB records and outbox row creation.
   - **Dependencies:** TASK-023, TASK-027
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 ---

@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { sessionsRouter } from "./routes/sessions.js";
+import { callbackRouter } from "./routes/callback.js";
 
 export type Env = {
   Bindings: {
@@ -44,6 +45,7 @@ app.get("/readyz", async (c) => {
 
 // Mount public sessions API
 app.route("/api/v1/public/sessions", sessionsRouter);
+app.route("/api/v1/public/sessions", callbackRouter);
 
 export { ConversationDO, StaffHubDO } from "./durable/conversation.js";
 
