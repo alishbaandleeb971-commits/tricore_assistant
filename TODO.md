@@ -328,14 +328,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-034: Staff Knowledge Management Screen & Release Flow**
+- [x] **TASK-034: Staff Knowledge Management Screen & Release Flow**
   - **Description:** Build knowledge editor in staff app with entry drafting, Markdown preview, Admin approval, release building (indexes 1 entry per request), and rollback action.
   - **Related SRS Requirement:** FR-092–FR-102
   - **Related SDD Section:** SDD §3.2, §5.3 (MOD-03, MOD-07, MOD-13)
   - **Acceptance Criteria:** Staff can edit FAQs/services; Admin can approve and build release; FTS indexes update; earlier releases can be rolled back.
   - **Required Tests:** End-to-end knowledge release workflow integration test.
   - **Dependencies:** TASK-013, TASK-033
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-035: Staff Leads Table & Browser CSV Export**

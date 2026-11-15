@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { sessionsRouter } from "./routes/sessions.js";
 import { callbackRouter } from "./routes/callback.js";
 import { staffRouter } from "./routes/staff.js";
+import { knowledgeRouter } from "./routes/knowledge.js";
 
 export type Env = {
   Bindings: {
@@ -48,6 +49,7 @@ app.get("/readyz", async (c) => {
 app.route("/api/v1/public/sessions", sessionsRouter);
 app.route("/api/v1/public/sessions", callbackRouter);
 app.route("/api/v1/staff", staffRouter);
+app.route("/api/v1/staff/knowledge", knowledgeRouter);
 
 export { ConversationDO, StaffHubDO } from "./durable/conversation.js";
 
