@@ -1,5 +1,5 @@
 import { uuidv7 } from "uuidv7";
-import { maskPII } from "@tricore/shared";
+import { maskPII, isWithinPktWorkingHours } from "@tricore/shared";
 import { checkRateLimit } from "../services/rateLimiter.js";
 import { retrieveKnowledgeChunks } from "../services/retrieval.js";
 import { ModelGateway } from "../services/modelGateway.js";
@@ -483,6 +483,37 @@ export class ConversationDO {
         now
       ),
     ]);
+
+    // Detect explicit human request -> check working hours (SDD §6.2, §6.4 Rule 5)
+    if (aiRes.intent === "handover_request") {
+      const wh = isWithinPktWorkingHours();
+      if (!wh.isWithinWorkingHours) {
+        this.stage = "CallbackForm";
+        await this.save();
+        const reply =
+          "Our live staff is currently offline. TriCore working hours are Monday–Friday, 9:00 AM to 7:00 PM PKT. Please submit a callback request with your contact details and our team will get back to you promptly.";
+        return {
+          messageId: replyMsgId,
+          seq: assistantSeq,
+          reply,
+          usedChunkIds: [],
+          stage: "CallbackForm",
+          intent: "handover_request",
+          buttons: [{ label: "Leave callback details", value: "callback" }]
+        };
+      } else {
+        await this.requestHandover();
+        const reply = "I am connecting you with a TriCore specialist now. Please hold on...";
+        return {
+          messageId: replyMsgId,
+          seq: assistantSeq,
+          reply,
+          usedChunkIds: [],
+          stage: "HandoverPending",
+          intent: "handover_request"
+        };
+      }
+    }
 
     // Detect quote request → start lead flow (SDD §6.2, §6.4)
     if (isQuoteRequest(maskedContent, aiRes.intent)) {

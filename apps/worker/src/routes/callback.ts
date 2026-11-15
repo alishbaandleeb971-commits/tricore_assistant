@@ -11,7 +11,7 @@ export interface CallbackRequestPayload {
 export type CallbackEnv = {
   Bindings: {
     DB: D1Database;
-    NOTIFY: Queue;
+    NOTIFY?: Queue;
   };
 };
 
@@ -30,7 +30,8 @@ callbackRouter.post("/:id/callback", async (c) => {
 
   const callbackId = uuidv7();
   const leadId = uuidv7();
-  const notificationId = uuidv7();
+  const emailNotificationId = uuidv7();
+  const slackNotificationId = uuidv7();
   const now = Date.now();
 
   // Look up conversation for this session if one exists
@@ -42,9 +43,10 @@ callbackRouter.post("/:id/callback", async (c) => {
 
   const convId = conv?.id || null;
 
-  // Single atomic batch: lead (first to satisfy FK) + callback_request + urgent outbox alert
+  // Single atomic batch: lead (first to satisfy FK) + callback_request + 2 outbox alert rows (email + slack)
   const notifPayload = JSON.stringify({
     leadId,
+    conversationId: convId,
     name: body.contactName,
     email: body.contactEmail || "",
     phone: body.contactPhone || "",
@@ -52,8 +54,12 @@ callbackRouter.post("/:id/callback", async (c) => {
     priority: "hot",
     currency: "USD",
     source: "callback",
-    description: body.note || "Visitor requested callback"
+    description: body.note || "Visitor requested callback",
+    createdAt: now
   });
+
+  const emailDedupeKey = `callback:${callbackId}:v1:email`;
+  const slackDedupeKey = `callback:${callbackId}:v1:slack`;
 
   await c.env.DB.batch([
     c.env.DB.prepare(
@@ -83,20 +89,33 @@ callbackRouter.post("/:id/callback", async (c) => {
       now
     ),
 
+    // Outbox 1: Email
     c.env.DB.prepare(
       `INSERT INTO notification (id, event_type, channel, dedupe_key, payload, status, attempts, created_at)
        VALUES (?, 'lead_alert', 'email', ?, ?, 'pending', 0, ?)`
-    ).bind(notificationId, `callback:${callbackId}`, notifPayload, now)
+    ).bind(emailNotificationId, emailDedupeKey, notifPayload, now),
+
+    // Outbox 2: Slack
+    c.env.DB.prepare(
+      `INSERT INTO notification (id, event_type, channel, dedupe_key, payload, status, attempts, created_at)
+       VALUES (?, 'lead_alert', 'slack', ?, ?, 'pending', 0, ?)`
+    ).bind(slackNotificationId, slackDedupeKey, notifPayload, now)
   ]);
 
   if (c.env.NOTIFY) {
-    await c.env.NOTIFY.send({ notificationId, leadId, priority: "hot" }).catch(() => {});
+    await Promise.allSettled([
+      c.env.NOTIFY.send({ notificationId: emailNotificationId, dedupeKey: emailDedupeKey }),
+      c.env.NOTIFY.send({ notificationId: slackNotificationId, dedupeKey: slackDedupeKey })
+    ]);
   }
 
   return c.json(
     {
       success: true,
       callbackId,
+      leadId,
+      emailNotificationId,
+      slackNotificationId,
       message: "Thank you! Our team has received your callback request and will contact you shortly."
     },
     201

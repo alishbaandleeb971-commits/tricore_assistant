@@ -31,5 +31,6 @@ describe("E2E Practice Conversations (Playwright / Integration - TASK-053)", () 
     });
     const cbRes = await app.fetch(cbReq, env);
     expect(cbRes.status).toBe(201);
+    await cbRes.json();
   });
 });

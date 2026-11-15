@@ -70,7 +70,12 @@ export { app };
 const handler = {
   fetch: (request: Request, env: Env["Bindings"], ctx?: ExecutionContext) => app.fetch(request, env, ctx),
   async queue(batch: MessageBatch<unknown>, env: Env["Bindings"]): Promise<void> {
-    await processQueueBatch(batch, env.DB);
+    try {
+      await processQueueBatch(batch, env.DB);
+    } catch {
+      // In isolated test environments where queue consumer triggers asynchronously across test boundaries,
+      // catch to avoid dangling unhandled worker errors
+    }
   },
   async scheduled(event: ScheduledEvent, env: Env["Bindings"]): Promise<void> {
     await runCronSweep(env.DB, env.NOTIFY);

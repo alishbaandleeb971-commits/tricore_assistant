@@ -252,7 +252,8 @@ sessionsRouter.post("/:id/lead", async (c) => {
     {
       success: true,
       leadId: result.leadId,
-      notificationId: result.notificationId,
+      emailNotificationId: result.emailNotificationId,
+      slackNotificationId: result.slackNotificationId,
       priority: result.priority,
       message: "Thank you! Your enquiry has been received and our team will contact you shortly."
     },

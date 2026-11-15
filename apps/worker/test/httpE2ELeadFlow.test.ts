@@ -110,11 +110,17 @@ describe("Deterministic Conversational Lead Flow through HTTP Route (TASK-021)",
     expect(consentRow).toBeDefined();
     expect(consentRow?.decision).toBe(1);
 
-    const notifRow = await env.DB.prepare("SELECT * FROM notification WHERE dedupe_key = ?")
-      .bind(`lead:${r10.leadId}`)
+    const emailNotif = await env.DB.prepare("SELECT * FROM notification WHERE dedupe_key = ?")
+      .bind(`lead:${r10.leadId}:v1:email`)
       .first<{ id: string; event_type: string }>();
-    expect(notifRow).toBeDefined();
-    expect(notifRow?.event_type).toBe("lead_alert");
+    expect(emailNotif).toBeDefined();
+    expect(emailNotif?.event_type).toBe("lead_alert");
+
+    const slackNotif = await env.DB.prepare("SELECT * FROM notification WHERE dedupe_key = ?")
+      .bind(`lead:${r10.leadId}:v1:slack`)
+      .first<{ id: string; event_type: string }>();
+    expect(slackNotif).toBeDefined();
+    expect(slackNotif?.event_type).toBe("lead_alert");
   });
 
   it("handles consent decline: quote -> consent no -> returns to Chatting with NO lead row created", async () => {

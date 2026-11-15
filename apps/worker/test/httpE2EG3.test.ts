@@ -56,12 +56,14 @@ describe("Stage G3 End-to-End HTTP Integration Tests", () => {
     const leadResult = (await leadRes.json()) as {
       success: boolean;
       leadId: string;
-      notificationId: string;
+      emailNotificationId: string;
+      slackNotificationId: string;
       priority: string;
     };
     expect(leadResult.success).toBe(true);
     expect(leadResult.leadId).toBeDefined();
-    expect(leadResult.notificationId).toBeDefined();
+    expect(leadResult.emailNotificationId).toBeDefined();
+    expect(leadResult.slackNotificationId).toBeDefined();
 
     // D. Assert lead row in D1
     const leadRow = await env.DB.prepare("SELECT * FROM lead WHERE id = ?")
@@ -75,11 +77,11 @@ describe("Stage G3 End-to-End HTTP Integration Tests", () => {
 
     // E. Assert notification row in D1
     const notifRow = await env.DB.prepare("SELECT * FROM notification WHERE id = ?")
-      .bind(leadResult.notificationId)
+      .bind(leadResult.emailNotificationId)
       .first<{ id: string; event_type: string; payload: string; status: string; dedupe_key: string }>();
     expect(notifRow).toBeDefined();
     expect(notifRow?.event_type).toBe("lead_alert");
-    expect(notifRow?.dedupe_key).toBe(`lead:${leadResult.leadId}`);
+    expect(notifRow?.dedupe_key).toBe(`lead:${leadResult.leadId}:v1:email`);
 
     // F. Process notification with fake adapters for email and Slack
     const dispatchRes = await dispatchNotification(
@@ -90,7 +92,7 @@ describe("Stage G3 End-to-End HTTP Integration Tests", () => {
       },
       { SLACK_WEBHOOK_URL: "https://hooks.slack.com/services/DUMMY/SLACK/WEBHOOK" }
     );
-    expect(dispatchRes.status).toBe("delivered");
+    expect(dispatchRes.status).toBe("sent");
 
     // G. Verify captured email and Slack payloads
     expect(capturedDispatches.length).toBe(2);
@@ -98,15 +100,15 @@ describe("Stage G3 End-to-End HTTP Integration Tests", () => {
     const slackDispatch = capturedDispatches.find((d) => d.type === "slack");
 
     expect(emailDispatch).toBeDefined();
-    expect(emailDispatch?.toOrUrl).toBe("team@tricoredigitaltech.com");
+    expect(emailDispatch?.toOrUrl).toBe("Info@tricoredigitaltech.com");
     expect(emailDispatch?.subjectOrText).toContain("Kamran Akmal");
     expect(emailDispatch?.body).toContain("Email: kamran@example.com");
-    expect(emailDispatch?.body).toContain("Service: ai-services");
+    expect(emailDispatch?.body).toContain("Interested Service: ai-services");
 
     expect(slackDispatch).toBeDefined();
     expect(slackDispatch?.toOrUrl).toBe("https://hooks.slack.com/services/DUMMY/SLACK/WEBHOOK");
     expect(slackDispatch?.subjectOrText).toContain("Kamran Akmal");
-    expect(slackDispatch?.subjectOrText).toContain("Service: ai-services");
+    expect(slackDispatch?.subjectOrText).toContain("*Service:* ai-services");
   });
 
   it("2. Handover outside working hours -> callback form -> callback row + lead row + alert", async () => {
@@ -166,14 +168,20 @@ describe("Stage G3 End-to-End HTTP Integration Tests", () => {
     expect(leadRow?.priority).toBe("hot");
     expect(leadRow?.source).toBe("callback");
 
-    // F. Assert notification alert in D1
+    // F. Assert notification alert in D1 (Email + Slack rows exist)
     const notifRow = await env.DB.prepare("SELECT * FROM notification WHERE dedupe_key = ?")
-      .bind(`callback:${cbResult.callbackId}`)
+      .bind(`callback:${cbResult.callbackId}:v1:email`)
       .first<{ id: string; event_type: string; payload: string }>();
     expect(notifRow).toBeDefined();
     expect(notifRow?.event_type).toBe("lead_alert");
     expect(notifRow?.payload).toContain("Zainab Bibi");
     expect(notifRow?.payload).toContain("hot");
+
+    const slackRow = await env.DB.prepare("SELECT * FROM notification WHERE dedupe_key = ?")
+      .bind(`callback:${cbResult.callbackId}:v1:slack`)
+      .first<{ id: string; event_type: string; payload: string }>();
+    expect(slackRow).toBeDefined();
+    expect(slackRow?.event_type).toBe("lead_alert");
   });
 
   it("3. Handover inside working hours (fake the clock) -> times out at 180 s -> callback form", async () => {
