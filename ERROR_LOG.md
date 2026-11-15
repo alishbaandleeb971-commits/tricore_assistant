@@ -47,3 +47,15 @@
   4. Ensure root scripts (`npm run dev`, `npm run db:migrate:local`, `npm run db:seed:local`) are present and tested.
 - **Status:** Fixed.
 
+### ERR-005: Session UNIQUE Constraint Collision from Constant Widget Token
+- **Discovered During:** Manual browser test — `POST /api/v1/public/sessions` returned 500 on the 2nd and every later call. Widget displayed "Connection error. Please check your internet connection."
+- **Issue:** `D1_ERROR: UNIQUE constraint failed: visitor_session.token_hash`. Every chat session after the first one was silently rejected.
+- **Root Cause:** Widget hardcoded `token: "widget-client-token"` on every POST to `/api/v1/public/sessions`. The Worker called `hashToken(token)` — a pure SHA-256 function — on that fixed string, producing the same 64-char hex every time. The `visitor_session.token_hash` column has a UNIQUE constraint, so the second insert always collided.
+- **Why existing 3 session tests did not catch this:** Each test used a *different* token (`"test-valid-turnstile-token"`, blank body, `"invalid-token"`). The collision case — sending the same token twice — was never exercised.
+- **Resolution / Prevention Rules:**
+  1. Session entropy must come from the server, not the client token. The Worker now generates 32 cryptographically random bytes via `crypto.getRandomValues`, hashes those for `token_hash`. The client-supplied Turnstile token is used only for Turnstile verification.
+  2. Widget generates a per-page-load random `CLIENT_TOKEN` via `crypto.getRandomValues` (24 bytes → 48-char hex). This prevents the widget ever sending the same string twice.
+  3. Regression test added (`sessions.test.ts`, 4th test): sends `"widget-client-token"` 3 times in a row; asserts all 3 return 201 and produce 3 distinct `token_hash` values in D1.
+  4. Widget 5xx / network failures now show the SDD §3.1 / FR-010 offline card (`Info@tricoredigitaltech.com` mailto link, "Chat Temporarily Unavailable") instead of a generic internet-connection error message. Session init retries once (1.2 s delay) before showing the card.
+- **Status:** Fixed — commit `TASK-011`.
+

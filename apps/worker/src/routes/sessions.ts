@@ -60,7 +60,7 @@ sessionsRouter.post("/:id/messages", async (c) => {
     return c.json({ error: "conversation_turn_failed" }, 500);
   }
 
-  const turnData = await turnRes.json();
+  const turnData = (await turnRes.json()) as Record<string, unknown>;
   return c.json(turnData, 200);
 });
 
@@ -78,7 +78,15 @@ sessionsRouter.post("/", async (c) => {
   }
 
   const sessionId = uuidv7();
-  const tokenHash = await hashToken(token);
+  // Generate 32 cryptographically random bytes as the session salt.
+  // The Turnstile token the visitor sends is only used for verification, NOT for
+  // the hash — it may be a constant test value ("widget-client-token") which would
+  // collide on the UNIQUE constraint. The hash is derived from the random salt so
+  // every session gets a distinct row.
+  const saltBytes = new Uint8Array(32);
+  crypto.getRandomValues(saltBytes);
+  const saltHex = Array.from(saltBytes).map((b) => b.toString(16).padStart(2, "0")).join("");
+  const tokenHash = await hashToken(saltHex);
   const now = Date.now();
 
   // Save session with zero IP storage
@@ -227,7 +235,7 @@ sessionsRouter.post("/:id/lead", async (c) => {
       email: body.email,
       serviceSlug: body.serviceSlug,
       phone: body.phone,
-      currency: body.currency || "USD",
+      currency: (body.currency || "USD") as "USD" | "PKR",
       description: body.description,
       budgetRangeId: body.budgetRangeId,
       timelineOptionId: body.timelineOptionId
@@ -354,6 +362,6 @@ sessionsRouter.post("/:id/alarm", async (c) => {
   const doId = c.env.CONVERSATION.idFromName(sessionId);
   const convDO = c.env.CONVERSATION.get(doId);
   const res = await convDO.fetch("http://internal/alarm", { method: "POST" });
-  const data = await res.json();
+  const data = (await res.json()) as Record<string, unknown>;
   return c.json(data);
 });
