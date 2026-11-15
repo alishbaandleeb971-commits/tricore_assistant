@@ -60,14 +60,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-006: D1 Migration 0001 & FTS5 Virtual Tables**
+- [x] **TASK-006: D1 Migration 0001 & FTS5 Virtual Tables**
   - **Description:** Generate migration `migrations/0001_initial.sql` via Drizzle Kit. Add raw SQL triggers creating `knowledge_fts` (bm25 weights) and `knowledge_trgm` (trigram tokenizer) virtual tables.
   - **Related SRS Requirement:** DR-009, AIR-001
   - **Related SDD Section:** SDD §5.4, §7.2, §7.6 (DEC-B08)
   - **Acceptance Criteria:** Migration applies cleanly to local D1; FTS5 and trigram tables synchronize automatically on chunk insert.
   - **Required Tests:** `npx wrangler d1 migrations apply assistant-dev --local` executes with zero errors.
   - **Dependencies:** TASK-005
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-007: D1 Seed Script (from `doc/08-seed/`)**
