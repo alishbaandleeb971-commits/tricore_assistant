@@ -106,14 +106,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-011: Public Sessions API & Turnstile Verification**
+- [x] **TASK-011: Public Sessions API & Turnstile Verification**
   - **Description:** Implement `POST /api/v1/public/sessions` checking Cloudflare Turnstile token, creating `visitor_session` with hashed token (zero IP storage), and returning greeting and quick buttons.
   - **Related SRS Requirement:** FR-003, FR-009, FR-148, DR-024
   - **Related SDD Section:** SDD §8.2, §9.1 (MOD-04)
   - **Acceptance Criteria:** Valid Turnstile token returns 201 with session token and quick buttons; invalid token returns 403; fallback rule handles Turnstile downtime (TBD-15).
   - **Required Tests:** Unit and integration tests with valid, invalid, and mocked timeout Turnstile tokens.
   - **Dependencies:** TASK-006, TASK-010
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-012: In-Memory / Edge Rate Limiter (Session & Daily Counters)**

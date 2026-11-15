@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { sessionsRouter } from "./routes/sessions.js";
 
 export type Env = {
   Bindings: {
@@ -10,6 +11,7 @@ export type Env = {
     EMAIL: SendEmail;
     ASSETS: Fetcher;
     ENVIRONMENT?: string;
+    TURNSTILE_SECRET?: string;
   };
 };
 
@@ -39,5 +41,8 @@ app.get("/readyz", async (c) => {
     return c.json({ status: "error", error: message }, 503);
   }
 });
+
+// Mount public sessions API
+app.route("/api/v1/public/sessions", sessionsRouter);
 
 export default app;
