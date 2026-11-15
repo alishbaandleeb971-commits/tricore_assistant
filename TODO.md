@@ -232,14 +232,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-025: Every-Minute Cron Trigger Sweep**
+- [x] **TASK-025: Every-Minute Cron Trigger Sweep**
   - **Description:** Implement `scheduled()` handler in Worker running every minute (`* * * * *`) to re-queue stuck outbox rows older than 2 minutes, check handover timeouts, and write heartbeat.
   - **Related SRS Requirement:** NFR-008, EXC-011
   - **Related SDD Section:** SDD §10.5, §11.3, §16.2 (MOD-16)
   - **Acceptance Criteria:** Cron sweep recovers pending outbox rows; writes heartbeat to `job_run`.
   - **Required Tests:** Test scheduled event execution and recovery of simulated dropped outbox messages.
   - **Dependencies:** TASK-024
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-026: Working Hours Evaluator (PKT Timezone Math)**
