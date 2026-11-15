@@ -392,14 +392,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-040: Scheduled Data Retention Job (`03:00 PKT`)**
+- [x] **TASK-040: Scheduled Data Retention Job (`03:00 PKT`)**
   - **Description:** Implement daily retention cleanup in Worker scheduled handler (`0 22 * * *` UTC / 03:00 PKT). Deletes expired chats (>90 days) and leads (>12 mos) in batches of 500 rows.
   - **Related SRS Requirement:** BR-027, FR-152, FR-153, DR-020
   - **Related SDD Section:** SDD §7.4, §16.2 (MOD-16)
   - **Acceptance Criteria:** Deletes records in 500-row batches; logs count in `deletion_log`; never deletes active or unexpired records.
   - **Required Tests:** Time-travel test verifying expired records deleted and active records preserved.
   - **Dependencies:** TASK-005, TASK-025
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 ---
