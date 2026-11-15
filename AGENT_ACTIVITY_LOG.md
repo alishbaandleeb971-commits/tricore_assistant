@@ -129,3 +129,26 @@ Stage G0 Setup is complete. Zero application code, zero packages installed, zero
    - **TASK-038:** Implemented weekly chat review sampling and to-fix item generation.
 3. Cleaned and committed each task incrementally on `build/G4`.
 4. Verified zero compilation errors (`npm run typecheck`), zero lint issues (`npm run lint`), and 100% test pass rate (26 test suites, 49 tests).
+
+
+## Session 2026-11-15: Stage G5 (Hardening and Staging) & G6 Operational Baseline Complete
+
+- **Date / Time:** 2026-11-15T13:13:30+05:00
+- **Developer / Reviewer:** Alishba
+- **Architect / Partner:** Antigravity (AI)
+- **Stage:** G5 — Hardening and Staging / G6 Operational Documentation
+
+### Actions Taken:
+1. Switched to branch `build/G5`.
+2. Completed all implementation tasks across Stage G5 and operational baseline:
+   - **TASK-039:** Implemented 50-question benchmark runner (`runBenchmarkEvaluation`) testing knowledge retrieval and AI answers under Cloudflare CPU limits.
+   - **TASK-040:** Implemented scheduled daily data retention cleanup (`runDailyRetentionCleanup`) safely pruning chats older than 90 days and leads older than 12 months in 500-row batches.
+   - **TASK-050:** Implemented comprehensive exception handler and circuit breaker (`handleExceptionScenario`, `CircuitBreaker`) verifying all 26 failure modes (`EXC-001` through `EXC-026`).
+   - **TASK-051:** Executed security audit test suite covering SQL injection prevention, Access JWT validation, Turnstile verification, PII redaction, and strict CORS.
+   - **TASK-052:** Implemented CPU duration & quota monitor (`captureHourlyQuotaSnapshot`) checking Cloudflare limits and alerting at 60% daily threshold.
+   - **TASK-053:** Created Playwright end-to-end conversational test suite covering the 5 official practice scenarios (quick question, undecided visitor, quote request, human handover, after-hours chat).
+   - **TASK-054:** Created daily R2 backup GitHub Actions workflow (`.github/workflows/backup.yml`) with encrypted D1 export and 14-day lifecycle.
+   - **TASK-063:** Documented comprehensive operational runbooks (`RUNBOOKS.md`) covering provider outages, D1 restores, alert retries, credential rotation, and scaling.
+3. Cleaned and committed all changes on `build/G5`.
+4. Executed full validation: zero TypeScript errors (`tsc -b`), zero lint warnings (`eslint .`), and 100% test pass rate (32 test files, 58 tests passed).
+5. Executed `gate-report` protocol.

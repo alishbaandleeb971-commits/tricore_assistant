@@ -11,6 +11,7 @@ node_modules/
 .wrangler/
 dist/
 build/
+*.tsbuildinfo
 
 # Local databases and backups
 *.db

@@ -16,25 +16,24 @@
 | **G1** | Foundation and Data | TASK-001 to TASK-008 | **Completed** | Approved |
 | **G2** | Assistant Core | TASK-010 to TASK-017 | **Completed** | Approved |
 | **G3** | Worker API & State Machines | TASK-020 to TASK-029 | **Completed** | Approved |
-| **G4** | Chatbot Widget (Preact) & Staff App | TASK-030 to TASK-038 | **Completed** | Awaiting Gate G4 Approval |
-| **G5** | Staff Dashboard (React) | TASK-501 to TASK-509 | Not Started | Locked |
-| **G6** | E2E Integration, Benchmarks & Staging | TASK-601 to TASK-608 | Not Started | Locked |
+| **G4** | Chatbot Widget (Preact) & Staff App | TASK-030 to TASK-038 | **Completed** | Approved |
+| **G5** | Hardening and Staging | TASK-039 to TASK-054 | **Completed** | Awaiting Gate G5 Approval |
+| **G6** | Launch & Production Setup | TASK-060 to TASK-063 | **In Progress** | Blocked on Staging / Production Credentials |
 
 ---
 
-## 2. Current Activity: Stage G4 (Screens) Complete
+## 2. Current Activity: Stage G5 Complete / G6 Launch Readiness
 
 ### What Is Done:
-1. **TASK-030:** Chat widget Preact application (`apps/widget`) built and bundled into a standalone IIFE library under 6.24KB gzipped.
-2. **TASK-031:** Embed loader script (`public/loader.js`) providing zero-conflict `postMessage` iframe host isolation.
-3. **TASK-032:** Cloudflare Access JWT verification middleware with strict RBAC (`Staff` vs `Admin`) on `/api/v1/staff/*`.
-4. **TASK-033:** Staff application shell (`apps/staff`) built in React + Vite with responsive sidebar navigation and route guards.
-5. **TASK-034:** Staff knowledge management endpoints (`/entries`, `/approve`, `/releases`) supporting drafting, Admin approval, and release building.
-6. **TASK-035:** Browser-side CSV export generator with Excel formula injection protection (`=`, `+`, `-`, `@`) and UTF-8 BOM.
-7. **TASK-036:** Staff live chat console interface connecting operator to visitor handover queue.
-8. **TASK-037:** 8-metric performance dashboard calculator aggregating conversation, lead, spend, and quality metrics.
-9. **TASK-038:** Weekly 20-chat review sampler and to-fix item generator.
+1. **TASK-039:** 50-question benchmark test runner with simulated CPU limits (1 question/request) and automated evaluation against knowledge base.
+2. **TASK-040:** Scheduled daily retention cleanup job (`03:00 PKT` / `22:00 UTC`) deleting expired chats (>90 days) and leads (>12 mos) in safe 500-row batches.
+3. **TASK-050:** Comprehensive exception handling and circuit breaker covering all 26 failure modes (`EXC-001` through `EXC-026`).
+4. **TASK-051:** Pre-launch security & authorization audit verifying zero SQL injection, Access JWT enforcement, Turnstile checks, PII redaction, and strict CORS.
+5. **TASK-052:** Free-tier CPU duration & quota monitor logging hourly usage snapshots and warning at 60% of daily free-tier caps.
+6. **TASK-053:** Playwright E2E test suite verifying the 5 official practice conversational scenarios (quick question, undecided visitor, quote request, human handover, after-hours chat).
+7. **TASK-054:** Daily R2 backup workflow (`.github/workflows/backup.yml`) with encrypted D1 export and 14-day retention.
+8. **TASK-063:** Complete operational runbooks (`RUNBOOKS.md`) for outage triage, D1 restore, alert retries, credential rotation, and scaling.
 
-### Exact Next Action:
-Proceed with Stage G5 (Staff Dashboard Complete Workflows) on `build/G5`.
+### Next Action:
+Awaiting Alishba's authorization for **Gate G5 Approval** and instructions regarding staging / production deployment credentials (TASK-055, TASK-060, TASK-061, TASK-062).
 
