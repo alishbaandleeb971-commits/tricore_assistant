@@ -30,14 +30,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-003: Vitest Test Environment with Workers Pool**
+- [x] **TASK-003: Vitest Test Environment with Workers Pool**
   - **Description:** Configure Vitest with `@cloudflare/vitest-pool-workers` in `apps/worker/vitest.config.ts`, binding to local D1, DO, and Queue.
   - **Related SRS Requirement:** N/A (Testing infrastructure)
   - **Related SDD Section:** SDD §2.2, §16.1 (DEC-14)
   - **Acceptance Criteria:** Sample worker test executes in real local Workers runtime pool.
   - **Required Tests:** `npx vitest run` passes.
   - **Dependencies:** TASK-002
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-004: GitHub Actions CI Workflow**
