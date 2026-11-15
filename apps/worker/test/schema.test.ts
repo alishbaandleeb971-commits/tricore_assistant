@@ -7,10 +7,10 @@ describe("Database Schema Definitions (D1 / Drizzle)", () => {
     const tables = Object.values(schema);
     expect(tables.length).toBeGreaterThanOrEqual(30);
 
-    for (const [tableName, tableDef] of Object.entries(schema)) {
+    for (const [, tableDef] of Object.entries(schema)) {
       if (typeof tableDef === "object" && tableDef !== null && "_" in tableDef) {
         // Inspect column names
-        const columns = Object.keys((tableDef as any));
+        const columns = Object.keys(tableDef as Record<string, unknown>);
         for (const col of columns) {
           expect(col.toLowerCase()).not.toContain("ip");
           expect(col.toLowerCase()).not.toContain("ip_address");
