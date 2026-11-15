@@ -166,14 +166,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-017: Durable Object `Conversation` State Machine**
+- [x] **TASK-017: Durable Object `Conversation` State Machine**
   - **Description:** Implement `MOD-05` in `Conversation` DO class managing chat turns, routing events, executing AI-1 call, and persisting turns in one atomic D1 batch.
   - **Related SRS Requirement:** FR-004, FR-012–FR-019, AIR-013
   - **Related SDD Section:** SDD §3.3, §6.2, §6.3 (MOD-05, DEC-05, DEC-B03)
   - **Acceptance Criteria:** Serializes chat turns; loads state from D1; calls retrieval and gateway; writes message + usage + state in single D1 batch.
   - **Required Tests:** Multi-turn conversational script in terminal: questions answered from dummy content, price inquiries politely refused.
   - **Dependencies:** TASK-010, TASK-011, TASK-013, TASK-014, TASK-015, TASK-016
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 ---

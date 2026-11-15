@@ -45,4 +45,6 @@ app.get("/readyz", async (c) => {
 // Mount public sessions API
 app.route("/api/v1/public/sessions", sessionsRouter);
 
+export { ConversationDO, StaffHubDO } from "./durable/conversation.js";
+
 export default app;
