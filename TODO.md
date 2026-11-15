@@ -368,11 +368,15 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-038: Weekly 20-Chat Review Screen & To-Fix List**
+- [x] **TASK-038: Weekly 20-Chat Review Screen & To-Fix List**
   - **Description:** Build weekly review interface sampling 20 conversations (stratified: unanswered, wrong, random). Reviewers mark answers Good/Wrong; Wrong answers populate to-fix list.
   - **Related SRS Requirement:** FR-137–FR-140, BR-023, BR-024
   - **Related SDD Section:** SDD §3.2, §16.3 (MOD-03, MOD-15)
   - **Acceptance Criteria:** Samples 20 chats weekly; Good/Wrong buttons persist marks; approved to-fix corrections feed back into knowledge base.
+  - **Required Tests:** Review flow integration test from sampling to to-fix item creation.
+  - **Dependencies:** TASK-017, TASK-033
+  - **Status:** Done
+  - **Blocking TBDs:** None
   - **Required Tests:** Sampling algorithm test; review mark persistence test.
   - **Dependencies:** TASK-033
   - **Status:** Not started
