@@ -182,14 +182,14 @@
 
 **Gate G3 Deliverable:** Lead saved -> captured alert in Outbox; human handover times out at 3 minutes in automated test.
 
-- [ ] **TASK-020: Visitor Privacy Consent Flow**
+- [x] **TASK-020: Visitor Privacy Consent Flow**
   - **Description:** Implement consent step in `MOD-05` and `MOD-09` prior to lead collection. Stores consent record in D1 linked to conversation and wording version.
   - **Related SRS Requirement:** BR-010, BR-011, FR-037, FR-038, DR-003
   - **Related SDD Section:** SDD §10.1, §13.4 (MOD-09)
   - **Acceptance Criteria:** Declining consent saves zero lead fields; agreeing records timestamp, wording version, and transitions to intake.
   - **Required Tests:** Unit tests verifying consent decline vs accept pathways.
   - **Dependencies:** TASK-017
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-021: Conversational Lead Intake & Validation**
