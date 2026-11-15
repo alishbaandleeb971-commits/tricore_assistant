@@ -80,14 +80,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-008: Health Routes (`/healthz` and `/readyz`)**
+- [x] **TASK-008: Health Routes (`/healthz` and `/readyz`)**
   - **Description:** Implement public `/healthz` and `/readyz` endpoints in Hono app. `/readyz` executes a `SELECT 1` query against D1 to confirm connectivity.
   - **Related SRS Requirement:** NFR-006, IR-008
   - **Related SDD Section:** SDD §8.2, §14.6
   - **Acceptance Criteria:** `GET /healthz` returns 200 OK; `GET /readyz` verifies D1 health in under 5 ms CPU.
   - **Required Tests:** Integration test for `/healthz` and `/readyz` in Workers test pool.
   - **Dependencies:** TASK-006
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 ---
