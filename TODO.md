@@ -156,14 +156,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-016: Deterministic Answer Guard (Zero Pricing & Grounding)**
+- [x] **TASK-016: Deterministic Answer Guard (Zero Pricing & Grounding)**
   - **Description:** Implement `MOD-08` checking generated text against approved passage IDs, stripping unapproved price quotes, and verifying polite refusal of forbidden topics.
   - **Related SRS Requirement:** AIR-004, AIR-005, AIR-006, FR-023, FR-024, FR-025
   - **Related SDD Section:** SDD §4.6, §7.2 (MOD-08)
   - **Acceptance Criteria:** Blocks ungrounded passage IDs; replaces invented prices with fixed quote-redirect template (`content/assistant_texts.md`); blocks competitor comparisons.
   - **Required Tests:** Test cases with passage hallucination, dollar amounts, competitor mentions, and clean replies.
   - **Dependencies:** TASK-014
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-017: Durable Object `Conversation` State Machine**
