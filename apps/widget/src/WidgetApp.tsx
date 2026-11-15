@@ -1,23 +1,39 @@
 import { useState, useEffect } from "preact/hooks";
 
+export interface ButtonOption {
+  label: string;
+  value: string;
+}
+
+export interface LeadConfirmCard {
+  name: string;
+  email: string;
+  service: string;
+  phone?: string;
+  currency?: string;
+  description?: string;
+}
+
 export interface MessageItem {
   id: string;
   sender: "visitor" | "assistant" | "system";
   text: string;
+  buttons?: ButtonOption[];
+  confirmCard?: LeadConfirmCard;
 }
 
 // Generate a unique Turnstile-compatible token per page load.
-// This prevents the UNIQUE constraint collision that happens when every widget
-// instance sends the same fixed string (ERR-005).
 function generateClientToken(): string {
   const bytes = new Uint8Array(24);
   crypto.getRandomValues(bytes);
-  return Array.from(bytes).map((b) => b.toString(16).padStart(2, "0")).join("");
+  return Array.from(bytes)
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
 }
 
 const CLIENT_TOKEN = generateClientToken();
 
-// SDD §3.1 / FR-010 offline card text — shown when the Worker cannot be reached.
+// SDD §3.1 / FR-010 offline card text
 const OFFLINE_CARD_TEXT =
   "Our chat assistant is temporarily unavailable. Please email us at Info@tricoredigitaltech.com and we'll get back to you as soon as possible.";
 
@@ -45,19 +61,19 @@ export function WidgetApp() {
           body: JSON.stringify({ token: CLIENT_TOKEN })
         });
         if (res.ok) {
-          const data = (await res.json()) as { sessionId: string; greeting?: string };
+          const data = (await res.json()) as { sessionId: string; greeting?: string; quickButtons?: ButtonOption[] };
           setSessionId(data.sessionId);
           if (data.greeting) {
             setMessages([
               {
                 id: "init",
                 sender: "assistant",
-                text: data.greeting
+                text: data.greeting,
+                buttons: data.quickButtons
               }
             ]);
           }
         } else if (attempt < 2) {
-          // Retry once on 5xx
           await new Promise((r) => setTimeout(r, 1200));
           return initSession(2);
         } else {
@@ -74,10 +90,10 @@ export function WidgetApp() {
     initSession();
   }, []);
 
-  const sendMessage = async () => {
-    if (!input.trim() || isLoading || isOffline) return;
+  const sendUserMessage = async (rawText: string) => {
+    if (!rawText.trim() || isLoading || isOffline) return;
 
-    const userText = input.trim();
+    const userText = rawText.trim();
     setInput("");
     const visitorMsgId = String(Date.now());
     setMessages((prev) => [...prev, { id: visitorMsgId, sender: "visitor", text: userText }]);
@@ -86,7 +102,6 @@ export function WidgetApp() {
     try {
       let activeSessionId = sessionId;
       if (!activeSessionId) {
-        // Session was never established — attempt once more then fall back to offline card
         const initRes = await fetch("/api/v1/public/sessions", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -109,17 +124,23 @@ export function WidgetApp() {
       });
 
       if (res.ok) {
-        const data = (await res.json()) as { reply: string; messageId?: string };
+        const data = (await res.json()) as {
+          reply: string;
+          messageId?: string;
+          buttons?: ButtonOption[];
+          confirmCard?: LeadConfirmCard;
+        };
         setMessages((prev) => [
           ...prev,
           {
             id: data.messageId || String(Date.now() + 1),
             sender: "assistant",
-            text: data.reply
+            text: data.reply,
+            buttons: data.buttons,
+            confirmCard: data.confirmCard
           }
         ]);
       } else if (res.status >= 500) {
-        // 5xx — show offline card (SDD §3.1, FR-010)
         setIsOffline(true);
       } else {
         setMessages((prev) => [
@@ -132,7 +153,6 @@ export function WidgetApp() {
         ]);
       }
     } catch {
-      // Network failure — show offline card (SDD §3.1, FR-010)
       setIsOffline(true);
     } finally {
       setIsLoading(false);
@@ -189,7 +209,6 @@ export function WidgetApp() {
           </div>
 
           {isOffline ? (
-            // SDD §3.1 / FR-010 — fixed offline card, company email, works without Worker
             <div
               className="tricore-offline-card"
               style={{
@@ -237,11 +256,71 @@ export function WidgetApp() {
                         padding: "8px 12px",
                         borderRadius: "12px",
                         backgroundColor: m.sender === "visitor" ? "#00A0F0" : "#f0f2f5",
-                        color: m.sender === "visitor" ? "#ffffff" : "#000000"
+                        color: m.sender === "visitor" ? "#ffffff" : "#000000",
+                        whiteSpace: "pre-wrap",
+                        textAlign: "left"
                       }}
                     >
                       {m.text}
                     </span>
+
+                    {/* Confirmation Recap Card */}
+                    {m.confirmCard && (
+                      <div
+                        style={{
+                          marginTop: "8px",
+                          padding: "10px",
+                          backgroundColor: "#f9fbfd",
+                          border: "1px solid #cce5ff",
+                          borderRadius: "8px",
+                          fontSize: "13px",
+                          textAlign: "left"
+                        }}
+                      >
+                        <div style={{ fontWeight: "bold", color: "#0030A0", marginBottom: "4px" }}>
+                          📋 Details Summary
+                        </div>
+                        <div><strong>Name:</strong> {m.confirmCard.name}</div>
+                        <div><strong>Email:</strong> {m.confirmCard.email}</div>
+                        <div><strong>Service:</strong> {m.confirmCard.service}</div>
+                        {m.confirmCard.phone && <div><strong>Phone:</strong> {m.confirmCard.phone}</div>}
+                        {m.confirmCard.currency && <div><strong>Currency:</strong> {m.confirmCard.currency}</div>}
+                        {m.confirmCard.description && <div><strong>Notes:</strong> {m.confirmCard.description}</div>}
+                      </div>
+                    )}
+
+                    {/* Interactive Action Buttons */}
+                    {m.buttons && m.buttons.length > 0 && (
+                      <div
+                        style={{
+                          marginTop: "8px",
+                          display: "flex",
+                          flexWrap: "wrap",
+                          gap: "6px",
+                          justifyContent: "flex-start"
+                        }}
+                      >
+                        {m.buttons.map((btn) => (
+                          <button
+                            key={btn.value}
+                            onClick={() => sendUserMessage(btn.value)}
+                            disabled={isLoading}
+                            style={{
+                              backgroundColor: "#ffffff",
+                              color: "#0030A0",
+                              border: "1px solid #00A0F0",
+                              borderRadius: "16px",
+                              padding: "6px 12px",
+                              fontSize: "12px",
+                              cursor: isLoading ? "default" : "pointer",
+                              transition: "background-color 0.2s"
+                            }}
+                          >
+                            {btn.label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ))}
                 {isLoading && (
@@ -256,12 +335,12 @@ export function WidgetApp() {
                   type="text"
                   value={input}
                   onInput={(e) => setInput((e.target as HTMLInputElement).value)}
-                  onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                  onKeyDown={(e) => e.key === "Enter" && sendUserMessage(input)}
                   placeholder="Ask a question..."
                   style={{ flex: 1, padding: "8px", borderRadius: "6px", border: "1px solid #ccc" }}
                 />
                 <button
-                  onClick={sendMessage}
+                  onClick={() => sendUserMessage(input)}
                   disabled={isLoading}
                   style={{
                     marginLeft: "8px",
