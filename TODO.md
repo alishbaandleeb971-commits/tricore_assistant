@@ -408,14 +408,14 @@
 
 **Gate G5 Deliverable:** 5 practice chats pass on staging; 50-question benchmark run with real model passes (>=45/50); CPU budget confirmed.
 
-- [ ] **TASK-050: Comprehensive Exception Handling (EXC-001–EXC-026)**
+- [x] **TASK-050: Comprehensive Exception Handling (EXC-001–EXC-026)**
   - **Description:** Implement and verify all 26 exception scenarios from SRS Section 11 and SDD §14.3 (AI provider failure, circuit breaker, D1 downtime fallback, outbox failure).
   - **Related SRS Requirement:** EXC-001–EXC-026, AC-092
   - **Related SDD Section:** SDD §14.2, §14.3
   - **Acceptance Criteria:** Every exception scenario triggers polite visitor-safe fallback and appropriate developer alert.
   - **Required Tests:** Automated exception injection test suite covering all 26 scenarios.
   - **Dependencies:** Stages G1–G4
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-051: Pre-Launch Security & Authorization Audit**
