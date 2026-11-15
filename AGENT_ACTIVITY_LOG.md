@@ -82,3 +82,27 @@ Stage G0 Setup is complete. Zero application code, zero packages installed, zero
 3. Cleaned and committed each task incrementally on `build/G2`.
 4. Verified zero compilation errors (`npm run typecheck`), zero lint issues (`npm run lint`), and 100% test pass rate (11 test suites, 23 tests).
 5. Executed `gate-report` protocol.
+
+
+## Session 2026-11-15: Stage G3 (Leads, Handover, Alerts) Complete
+
+- **Date / Time:** 2026-11-15T12:47:20+05:00
+- **Developer / Reviewer:** Alishba
+- **Architect / Partner:** Antigravity (AI)
+- **Stage:** G3 — Leads, Handover, Alerts
+
+### Actions Taken:
+1. Switched to branch `build/G3`.
+2. Completed all tasks in Stage G3:
+   - **TASK-020:** Implemented visitor privacy consent flow in D1.
+   - **TASK-021:** Implemented conversational lead intake schema and validation.
+   - **TASK-022:** Implemented pure function lead scoring (Hot / Warm / Cold).
+   - **TASK-023:** Implemented atomic D1 batch for lead and notification outbox record.
+   - **TASK-024:** Implemented Queue consumer dispatcher with Email and Slack adapters.
+   - **TASK-025:** Implemented every-minute cron trigger sweep for outbox recovery and heartbeat.
+   - **TASK-026:** Implemented PKT working hours evaluator (9 AM – 7 PM PKT, Mon-Fri).
+   - **TASK-027:** Implemented Handover DO alarm with 180-second timeout.
+   - **TASK-028:** Implemented `StaffHubDO` with WebSocket broadcast and claim logic.
+   - **TASK-029:** Implemented callback request intake API.
+3. Cleaned and committed each task incrementally on `build/G3`.
+4. Verified zero compilation errors (`npm run typecheck`), zero lint issues (`npm run lint`), and 100% test pass rate (21 test suites, 41 tests).
