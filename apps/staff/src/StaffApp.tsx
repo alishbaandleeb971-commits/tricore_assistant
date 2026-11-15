@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { LiveChatConsole } from "./components/LiveChatConsole.js";
 
 export type StaffScreen = "dashboard" | "leads" | "knowledge" | "liveChat" | "reviews";
 
@@ -66,7 +67,7 @@ export function StaffApp() {
           {currentScreen === "dashboard" && <div>8-Metric Performance Dashboard overview.</div>}
           {currentScreen === "leads" && <div>Leads table and CSV export.</div>}
           {currentScreen === "knowledge" && <div>Knowledge entry drafting and release control.</div>}
-          {currentScreen === "liveChat" && <div>Real-time visitor handover queue.</div>}
+          {currentScreen === "liveChat" && <LiveChatConsole />}
           {currentScreen === "reviews" && <div>Weekly 20-chat quality audit.</div>}
         </section>
       </main>

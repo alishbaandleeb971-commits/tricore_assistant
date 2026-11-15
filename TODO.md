@@ -348,14 +348,14 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-036: Staff Live Chat Console**
+- [x] **TASK-036: Staff Live Chat Console**
   - **Description:** Build live chat screen in staff app connecting to `StaffHub` WebSocket. Shows incoming handover requests, audio/visual notification, accept button, and two-way chat window.
   - **Related SRS Requirement:** FR-105, FR-110, FR-111, FR-112
   - **Related SDD Section:** SDD §3.2, §11.4 (MOD-03, MOD-10)
   - **Acceptance Criteria:** Rings on handover request; operator accepts and joins; messages exchange in real time; operator can end chat cleanly.
   - **Required Tests:** Live chat UI integration test.
   - **Dependencies:** TASK-028, TASK-033
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-037: 8-Metric Performance Dashboard Screen**
