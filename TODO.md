@@ -96,84 +96,84 @@
 
 **Gate G2 Deliverable:** A scripted chat in the terminal answers questions from dummy content and refuses to invent prices.
 
-- [ ] **TASK-010: PII Masking Engine (Card & Password Sanitization)**
+- [x] **TASK-010: PII Masking Engine (Card & Password Sanitization)**
   - **Description:** Implement `MOD-04` regex masking engine replacing credit card numbers (Luhn check) and password-like sequences with `[hidden]`.
   - **Related SRS Requirement:** FR-147, DR-022, AIR-015
   - **Related SDD Section:** SDD §13.3 (MOD-04)
   - **Acceptance Criteria:** Masking runs in-memory before storage or AI calls; passes positive and negative test fixture suite; zero false drops on normal text.
   - **Required Tests:** Unit tests covering card numbers, separators, passwords, and innocent phone/order numbers.
   - **Dependencies:** TASK-001
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-011: Public Sessions API & Turnstile Verification**
+- [x] **TASK-011: Public Sessions API & Turnstile Verification**
   - **Description:** Implement `POST /api/v1/public/sessions` checking Cloudflare Turnstile token, creating `visitor_session` with hashed token (zero IP storage), and returning greeting and quick buttons.
   - **Related SRS Requirement:** FR-003, FR-009, FR-148, DR-024
   - **Related SDD Section:** SDD §8.2, §9.1 (MOD-04)
   - **Acceptance Criteria:** Valid Turnstile token returns 201 with session token and quick buttons; invalid token returns 403; fallback rule handles Turnstile downtime (TBD-15).
   - **Required Tests:** Unit and integration tests with valid, invalid, and mocked timeout Turnstile tokens.
   - **Dependencies:** TASK-006, TASK-010
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-012: In-Memory / Edge Rate Limiter (Session & Daily Counters)**
+- [x] **TASK-012: In-Memory / Edge Rate Limiter (Session & Daily Counters)**
   - **Description:** Implement rate limiting using `rate_counter` table in D1 and edge rule headers (10 msg/min, 40 msg/session, 1,000 chars/msg). Zero visitor IP storage.
   - **Related SRS Requirement:** FR-149, FR-164, EXC-026
   - **Related SDD Section:** SDD §7.2, §13.4, §15.4 (MOD-04, TBD-68)
   - **Acceptance Criteria:** Exceeding 10 msg/min returns 429 with `Retry-After`; messages >1,000 characters return 413.
   - **Required Tests:** Test flood of requests verifying 429 response; message length boundary tests.
   - **Dependencies:** TASK-011
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-013: SQLite FTS5 Knowledge Retrieval Service**
+- [x] **TASK-013: SQLite FTS5 Knowledge Retrieval Service**
   - **Description:** Implement `MOD-07` knowledge retrieval querying `knowledge_fts` (bm25 weights: title 10, keywords 5, body 1) and `knowledge_trgm` fuzzy matches against live content release.
   - **Related SRS Requirement:** AIR-001, AIR-002, FR-020
   - **Related SDD Section:** SDD §5.4, §5.5 (MOD-07, DEC-B08)
   - **Acceptance Criteria:** Searches return top 4 chunks with IDs and scores; scores below threshold return empty results.
   - **Required Tests:** Retrieval tests with exact service terms, synonyms, and misspellings.
   - **Dependencies:** TASK-006, TASK-007
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-014: Provider-Independent Model Gateway with Fake Provider**
+- [x] **TASK-014: Provider-Independent Model Gateway with Fake Provider**
   - **Description:** Implement `MOD-06` gateway supporting structured JSON outputs (AI-1 result schema) and a deterministic Fake Model Provider for testing.
   - **Related SRS Requirement:** AIR-010, AIR-013
   - **Related SDD Section:** SDD §4.2, §4.3 (MOD-06)
   - **Acceptance Criteria:** Validates AI-1 response schema with Zod; retries once on malformed JSON; tracks token usage and latency.
   - **Required Tests:** Gateway unit tests with mock responses (valid, invalid JSON, timeout).
   - **Dependencies:** TASK-001
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-015: AI Monthly Budget Gate & Spend Tracking**
+- [x] **TASK-015: AI Monthly Budget Gate & Spend Tracking**
   - **Description:** Implement `MOD-12` budget gate using atomic updates on `spend_month`. Enforces $100 cap and queues 80% warning alert.
   - **Related SRS Requirement:** BR-025, FR-158, FR-159, FR-160
   - **Related SDD Section:** SDD §15.1, §15.3 (MOD-12)
   - **Acceptance Criteria:** Rejection of calls when monthly spend exceeds limit; switch to `DetailsOnly` mode; atomic reservation prevents overspend across concurrent chats.
   - **Required Tests:** Unit tests testing reservation, spend increment, 80% warning trigger, and 100% hard stop.
   - **Dependencies:** TASK-005, TASK-014
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-016: Deterministic Answer Guard (Zero Pricing & Grounding)**
+- [x] **TASK-016: Deterministic Answer Guard (Zero Pricing & Grounding)**
   - **Description:** Implement `MOD-08` checking generated text against approved passage IDs, stripping unapproved price quotes, and verifying polite refusal of forbidden topics.
   - **Related SRS Requirement:** AIR-004, AIR-005, AIR-006, FR-023, FR-024, FR-025
   - **Related SDD Section:** SDD §4.6, §7.2 (MOD-08)
   - **Acceptance Criteria:** Blocks ungrounded passage IDs; replaces invented prices with fixed quote-redirect template (`content/assistant_texts.md`); blocks competitor comparisons.
   - **Required Tests:** Test cases with passage hallucination, dollar amounts, competitor mentions, and clean replies.
   - **Dependencies:** TASK-014
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-017: Durable Object `Conversation` State Machine**
+- [x] **TASK-017: Durable Object `Conversation` State Machine**
   - **Description:** Implement `MOD-05` in `Conversation` DO class managing chat turns, routing events, executing AI-1 call, and persisting turns in one atomic D1 batch.
   - **Related SRS Requirement:** FR-004, FR-012–FR-019, AIR-013
   - **Related SDD Section:** SDD §3.3, §6.2, §6.3 (MOD-05, DEC-05, DEC-B03)
   - **Acceptance Criteria:** Serializes chat turns; loads state from D1; calls retrieval and gateway; writes message + usage + state in single D1 batch.
   - **Required Tests:** Multi-turn conversational script in terminal: questions answered from dummy content, price inquiries politely refused.
   - **Dependencies:** TASK-010, TASK-011, TASK-013, TASK-014, TASK-015, TASK-016
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 ---
