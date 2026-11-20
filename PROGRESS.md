@@ -15,27 +15,26 @@
 | **G0** | Documentation & Control Setup | Setup deliverables | **Completed** | Approved |
 | **G1** | Foundation and Data | TASK-001 to TASK-008 | **Completed** | Approved |
 | **G2** | Assistant Core | TASK-010 to TASK-017 | **Completed** | Approved |
-| **G3** | Worker API & State Machines | TASK-020 to TASK-029 | **Completed** | Awaiting Gate G3 Approval |
-| **G4** | Chatbot Widget (Preact) | TASK-401 to TASK-407 | Not Started | Locked |
+| **G3** | Worker API & State Machines | TASK-020 to TASK-029 | **Completed** | Approved |
+| **G4** | Chatbot Widget (Preact) & Staff App | TASK-030 to TASK-038 | **Completed** | Awaiting Gate G4 Approval |
 | **G5** | Staff Dashboard (React) | TASK-501 to TASK-509 | Not Started | Locked |
 | **G6** | E2E Integration, Benchmarks & Staging | TASK-601 to TASK-608 | Not Started | Locked |
 
 ---
 
-## 2. Current Activity: Stage G3 (Leads, Handover, Alerts) Complete
+## 2. Current Activity: Stage G4 (Screens) Complete
 
 ### What Is Done:
-1. **TASK-020:** Visitor privacy consent flow storing consent decisions in D1 without saving lead fields when declined.
-2. **TASK-021:** Conversational lead intake schema with email/phone format validation and confirmation recap generation.
-3. **TASK-022:** Pure function deterministic lead scoring (Hot, Warm, Cold prioritization).
-4. **TASK-023:** Single atomic D1 batch for lead + outbox notification (`notification` table) with dedupe key.
-5. **TASK-024:** Queue consumer and notification dispatcher supporting verified Email Routing and Slack webhooks with retry backoff.
-6. **TASK-025:** Every-minute cron trigger sweep recovering dropped outbox notifications and recording heartbeat in `job_run`.
-7. **TASK-026:** PKT working hours evaluator (9:00 AM – 7:00 PM PKT, Monday–Friday) with weekend checks.
-8. **TASK-027:** Handover DO alarm setting 180s timer, transitioning to callback form upon timeout, and cancelling on staff acceptance.
-9. **TASK-028:** Durable Object `StaffHubDO` broadcasting waiting handovers via WebSockets and processing operator claim actions.
-10. **TASK-029:** Callback request intake API (`POST /api/v1/public/sessions/:id/callback`) creating linked lead and urgent sales alerts.
+1. **TASK-030:** Chat widget Preact application (`apps/widget`) built and bundled into a standalone IIFE library under 6.24KB gzipped.
+2. **TASK-031:** Embed loader script (`public/loader.js`) providing zero-conflict `postMessage` iframe host isolation.
+3. **TASK-032:** Cloudflare Access JWT verification middleware with strict RBAC (`Staff` vs `Admin`) on `/api/v1/staff/*`.
+4. **TASK-033:** Staff application shell (`apps/staff`) built in React + Vite with responsive sidebar navigation and route guards.
+5. **TASK-034:** Staff knowledge management endpoints (`/entries`, `/approve`, `/releases`) supporting drafting, Admin approval, and release building.
+6. **TASK-035:** Browser-side CSV export generator with Excel formula injection protection (`=`, `+`, `-`, `@`) and UTF-8 BOM.
+7. **TASK-036:** Staff live chat console interface connecting operator to visitor handover queue.
+8. **TASK-037:** 8-metric performance dashboard calculator aggregating conversation, lead, spend, and quality metrics.
+9. **TASK-038:** Weekly 20-chat review sampler and to-fix item generator.
 
 ### Exact Next Action:
-Proceed with Stage G4 (Chatbot Widget) implementation on `build/G4`.
+Proceed with Stage G5 (Staff Dashboard Complete Workflows) on `build/G5`.
 

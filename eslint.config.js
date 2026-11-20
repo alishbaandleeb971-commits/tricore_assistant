@@ -5,7 +5,14 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    ignores: ["**/dist/**", "**/node_modules/**", "**/.wrangler/**", "**/migrations/**", "doc/**"]
+    ignores: [
+      "**/dist/**",
+      "**/node_modules/**",
+      "**/.wrangler/**",
+      "**/migrations/**",
+      "apps/widget/public/**",
+      "doc/**"
+    ]
   },
   {
     rules: {

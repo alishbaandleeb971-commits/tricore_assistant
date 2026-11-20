@@ -288,91 +288,95 @@
 
 **Gate G4 Deliverable:** Click through chat widget and staff administration app locally.
 
-- [ ] **TASK-030: Chat Widget Preact Application (`apps/widget`)**
+- [x] **TASK-030: Chat Widget Preact Application (`apps/widget`)**
   - **Description:** Build Preact + TypeScript widget application inside `apps/widget`: message bubbles, quick buttons, consent buttons, budget/timeline selection, handover banner, callback form, and offline card.
   - **Related SRS Requirement:** FR-001–FR-011, IR-001
   - **Related SDD Section:** SDD §3.1 (MOD-02, DEC-09)
   - **Acceptance Criteria:** Bundles under 30KB gzipped; handles WebSocket and polling fallback; respects brand colors (`#00A0F0`, `#0030A0`).
   - **Required Tests:** Component unit tests with Vitest; bundle size check.
   - **Dependencies:** TASK-011, TASK-027
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-031: Embed Loader Script (`widget.js`) & Iframe Host Isolation**
+- [x] **TASK-031: Embed Loader Script (`widget.js`) & Iframe Host Isolation**
   - **Description:** Build vanilla JavaScript loader script injected onto host website creating floating launcher button and isolated `<iframe>` pointing to widget app.
   - **Related SRS Requirement:** FR-001, FR-002, IR-007
   - **Related SDD Section:** SDD §3.1 (MOD-01, DEC-09)
   - **Acceptance Criteria:** Single script tag embeds cleanly; communicates open/close state via `window.postMessage`; host page CSS does not bleed into widget.
   - **Required Tests:** Host page embedding test on sample HTML document.
   - **Dependencies:** TASK-030
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-032: Cloudflare Access JWT Verification Middleware**
+- [x] **TASK-032: Cloudflare Access JWT Verification Middleware**
   - **Description:** Implement `MOD-13` middleware verifying `Cf-Access-Jwt-Assertion` header on all `/api/v1/staff/*` routes. Maps email to `staff_user` record and enforces RBAC (`Staff` vs `Admin`).
   - **Related SRS Requirement:** FR-085, FR-086, FR-087, NFR-010, NFR-011, §4.2 Permission Matrix
   - **Related SDD Section:** SDD §9.2, §9.3, §9.4 (MOD-13, DEC-B05)
   - **Acceptance Criteria:** Unauthenticated requests receive 401; unauthorized roles receive 403; local dev bypass allows testing with mock header.
   - **Required Tests:** Route permission test matrix covering all staff endpoints across Admin, Staff, and unauthenticated roles.
   - **Dependencies:** TASK-005
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-033: Staff App Shell & Navigation Layout (`apps/staff`)**
+- [x] **TASK-033: Staff App Shell & Navigation Layout (`apps/staff`)**
   - **Description:** Initialize React + Vite + Tailwind SPA in `apps/staff` with responsive sidebar navigation, Access identity header (`GET /staff/me`), and route guards.
   - **Related SRS Requirement:** FR-085, IR-002
   - **Related SDD Section:** SDD §3.2 (MOD-03, DEC-10)
   - **Acceptance Criteria:** Static export builds cleanly; navigation displays allowed screens based on user role; times format in PKT.
   - **Required Tests:** Component render and routing tests.
   - **Dependencies:** TASK-032
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-034: Staff Knowledge Management Screen & Release Flow**
+- [x] **TASK-034: Staff Knowledge Management Screen & Release Flow**
   - **Description:** Build knowledge editor in staff app with entry drafting, Markdown preview, Admin approval, release building (indexes 1 entry per request), and rollback action.
   - **Related SRS Requirement:** FR-092–FR-102
   - **Related SDD Section:** SDD §3.2, §5.3 (MOD-03, MOD-07, MOD-13)
   - **Acceptance Criteria:** Staff can edit FAQs/services; Admin can approve and build release; FTS indexes update; earlier releases can be rolled back.
   - **Required Tests:** End-to-end knowledge release workflow integration test.
   - **Dependencies:** TASK-013, TASK-033
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-035: Staff Leads Table & Browser CSV Export**
+- [x] **TASK-035: Staff Leads Table & Browser CSV Export**
   - **Description:** Build leads management screen displaying leads, priority badges (Hot/Warm/Cold), conversation links, date filter, and browser-side CSV generation with formula injection protection.
   - **Related SRS Requirement:** FR-103, FR-106, FR-107, FR-109
   - **Related SDD Section:** SDD §3.2, §12.5 (MOD-03, MOD-13)
   - **Acceptance Criteria:** Leads table renders paginated rows; CSV builds entirely in browser with sanitized formula prefixes (`=`, `+`, `-`, `@`); UTF-8 BOM included.
   - **Required Tests:** CSV export generator unit test with formula strings and special characters.
   - **Dependencies:** TASK-023, TASK-033
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-036: Staff Live Chat Console**
+- [x] **TASK-036: Staff Live Chat Console**
   - **Description:** Build live chat screen in staff app connecting to `StaffHub` WebSocket. Shows incoming handover requests, audio/visual notification, accept button, and two-way chat window.
   - **Related SRS Requirement:** FR-105, FR-110, FR-111, FR-112
   - **Related SDD Section:** SDD §3.2, §11.4 (MOD-03, MOD-10)
   - **Acceptance Criteria:** Rings on handover request; operator accepts and joins; messages exchange in real time; operator can end chat cleanly.
   - **Required Tests:** Live chat UI integration test.
   - **Dependencies:** TASK-028, TASK-033
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-037: 8-Metric Performance Dashboard Screen**
+- [x] **TASK-037: 8-Metric Performance Dashboard Screen**
   - **Description:** Implement `MOD-14` queries and staff UI displaying the 8 confirmed metrics with PKT date filter (Last 7 Days, Last 30 Days, Custom Range).
   - **Related SRS Requirement:** FR-116–FR-129, IN-09
   - **Related SDD Section:** SDD §3.2, §12.1, §12.2 (MOD-03, MOD-14)
   - **Acceptance Criteria:** All 8 metrics calculate accurately against reference fixture dataset; results cache for 60 seconds.
   - **Required Tests:** Dashboard SQL query integration tests against reference data fixture.
   - **Dependencies:** TASK-005, TASK-033
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-038: Weekly 20-Chat Review Screen & To-Fix List**
+- [x] **TASK-038: Weekly 20-Chat Review Screen & To-Fix List**
   - **Description:** Build weekly review interface sampling 20 conversations (stratified: unanswered, wrong, random). Reviewers mark answers Good/Wrong; Wrong answers populate to-fix list.
   - **Related SRS Requirement:** FR-137–FR-140, BR-023, BR-024
   - **Related SDD Section:** SDD §3.2, §16.3 (MOD-03, MOD-15)
   - **Acceptance Criteria:** Samples 20 chats weekly; Good/Wrong buttons persist marks; approved to-fix corrections feed back into knowledge base.
+  - **Required Tests:** Review flow integration test from sampling to to-fix item creation.
+  - **Dependencies:** TASK-017, TASK-033
+  - **Status:** Done
+  - **Blocking TBDs:** None
   - **Required Tests:** Sampling algorithm test; review mark persistence test.
   - **Dependencies:** TASK-033
   - **Status:** Not started
