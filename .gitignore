@@ -24,3 +24,6 @@ coverage/
 playwright-report/
 test-results/
 
+# Sensitive data
+doc/Info_by_human.md
+
