@@ -33,10 +33,72 @@ export class ConversationDO {
   private conversationId: string | null = null;
   private sessionId: string | null = null;
   private seq = 0;
+  private activeHandoverId: string | null = null;
+  private handoverDeadlineAt: number | null = null;
 
   constructor(state: DurableObjectState, env: WorkerEnv) {
     this.state = state;
     this.env = env;
+  }
+
+  async alarm(): Promise<void> {
+    // 3-minute handover timeout alarm fired
+    if (this.activeHandoverId) {
+      await this.env.DB.prepare(
+        "UPDATE handover_request SET status = 'timed_out', outcome = 'unanswered_fallback' WHERE id = ?"
+      )
+        .bind(this.activeHandoverId)
+        .run();
+
+      this.activeHandoverId = null;
+      this.handoverDeadlineAt = null;
+    }
+  }
+
+  async requestHandover(): Promise<{ handoverId: string; status: string; deadlineAt: number }> {
+    const handoverId = uuidv7();
+    const now = Date.now();
+    const deadlineAt = now + 180_000; // 3 minutes = 180 seconds
+
+    this.activeHandoverId = handoverId;
+    this.handoverDeadlineAt = deadlineAt;
+
+    if (this.state.storage?.setAlarm) {
+      await this.state.storage.setAlarm(deadlineAt);
+    }
+
+    const convId = this.conversationId || uuidv7();
+
+    await this.env.DB.prepare(
+      `INSERT INTO handover_request (id, conversation_id, status, requested_at, deadline_at)
+       VALUES (?, ?, 'pending', ?, ?)`
+    )
+      .bind(handoverId, convId, now, deadlineAt)
+      .run();
+
+    return {
+      handoverId,
+      status: "pending",
+      deadlineAt
+    };
+  }
+
+  async acceptHandover(staffUserId: string): Promise<boolean> {
+    if (!this.activeHandoverId) return false;
+
+    if (this.state.storage?.deleteAlarm) {
+      await this.state.storage.deleteAlarm();
+    }
+
+    await this.env.DB.prepare(
+      "UPDATE handover_request SET status = 'accepted', accepted_by = ? WHERE id = ?"
+    )
+      .bind(staffUserId, this.activeHandoverId)
+      .run();
+
+    this.activeHandoverId = null;
+    this.handoverDeadlineAt = null;
+    return true;
   }
 
   async fetch(request: Request): Promise<Response> {
@@ -157,14 +219,69 @@ export class ConversationDO {
 
 export class StaffHubDO {
   private state: DurableObjectState;
-  private env: Record<string, unknown>;
+  private env: WorkerEnv;
+  private staffSockets: Set<WebSocket> = new Set();
+  private pendingHandovers: Map<string, { handoverId: string; conversationId: string; visitorName: string }> = new Map();
 
-  constructor(state: DurableObjectState, env: Record<string, unknown>) {
+  constructor(state: DurableObjectState, env: WorkerEnv) {
     this.state = state;
     this.env = env;
   }
 
-  async fetch(_request: Request): Promise<Response> {
+  async fetch(request: Request): Promise<Response> {
+    const upgradeHeader = request.headers.get("Upgrade");
+    if (upgradeHeader === "websocket") {
+      const webSocketPair = new WebSocketPair();
+      const [client, server] = Object.values(webSocketPair);
+
+      server.accept();
+      this.staffSockets.add(server);
+
+      server.addEventListener("close", () => {
+        this.staffSockets.delete(server);
+      });
+
+      server.addEventListener("message", (event) => {
+        try {
+          const msg = JSON.parse(event.data as string);
+          if (msg.type === "claim_handover") {
+            this.pendingHandovers.delete(msg.handoverId);
+            this.broadcast({ type: "handover_claimed", handoverId: msg.handoverId, claimedBy: msg.staffId });
+          }
+        } catch {
+          // ignore malformed message
+        }
+      });
+
+      return new Response(null, { status: 101, webSocket: client });
+    }
+
+    const url = new URL(request.url);
+    if (url.pathname.endsWith("/broadcast-handover") && request.method === "POST") {
+      const body = (await request.json()) as { handoverId: string; conversationId: string; visitorName: string };
+      this.pendingHandovers.set(body.handoverId, body);
+      this.broadcast({ type: "new_handover", ...body });
+      return new Response(JSON.stringify({ success: true, connectedStaff: this.staffSockets.size }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
     return new Response("StaffHub OK", { status: 200 });
+  }
+
+  broadcast(message: unknown) {
+    const serialized = JSON.stringify(message);
+    for (const ws of this.staffSockets) {
+      try {
+        ws.send(serialized);
+      } catch {
+        this.staffSockets.delete(ws);
+      }
+    }
+  }
+
+  getPendingHandovers() {
+    return Array.from(this.pendingHandovers.values());
   }
 }

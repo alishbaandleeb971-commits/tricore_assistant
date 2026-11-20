@@ -182,104 +182,104 @@
 
 **Gate G3 Deliverable:** Lead saved -> captured alert in Outbox; human handover times out at 3 minutes in automated test.
 
-- [ ] **TASK-020: Visitor Privacy Consent Flow**
+- [x] **TASK-020: Visitor Privacy Consent Flow**
   - **Description:** Implement consent step in `MOD-05` and `MOD-09` prior to lead collection. Stores consent record in D1 linked to conversation and wording version.
   - **Related SRS Requirement:** BR-010, BR-011, FR-037, FR-038, DR-003
   - **Related SDD Section:** SDD §10.1, §13.4 (MOD-09)
   - **Acceptance Criteria:** Declining consent saves zero lead fields; agreeing records timestamp, wording version, and transitions to intake.
   - **Required Tests:** Unit tests verifying consent decline vs accept pathways.
   - **Dependencies:** TASK-017
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-021: Conversational Lead Intake & Validation**
+- [x] **TASK-021: Conversational Lead Intake & Validation**
   - **Description:** Implement scripted lead collection flow: Name, Email, Service (Required); Phone, Currency, Budget Range, Timeline, Description (Optional).
   - **Related SRS Requirement:** FR-040, FR-041, FR-042, FR-043, FR-044, FR-051
   - **Related SDD Section:** SDD §10.1, §10.2 (MOD-09)
   - **Acceptance Criteria:** Validates email and phone; accepts skips for optional fields; shows confirmation recap before saving.
   - **Required Tests:** Intake tests with complete data, skipped fields, invalid email retry, and recap confirmation.
   - **Dependencies:** TASK-020
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-022: Pure Function Lead Scoring (Hot / Warm / Cold)**
+- [x] **TASK-022: Pure Function Lead Scoring (Hot / Warm / Cold)**
   - **Description:** Implement deterministic scoring function calculating priority: Hot (Phone + Budget >= threshold + Timeline <= 3 mos); Warm (Name + Email + Service); Cold (others).
   - **Related SRS Requirement:** BR-004, BR-005, BR-006, BR-007, FR-053, FR-054
   - **Related SDD Section:** SDD §10.3 (MOD-09)
   - **Acceptance Criteria:** Pure logic test passes full truth table; uses dev/staging dummy threshold ($2,000 / Rs 500,000) when production threshold is unset.
   - **Required Tests:** Comprehensive truth table unit test covering all scoring combinations.
   - **Dependencies:** TASK-021
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-023: Atomic D1 Outbox & Notification Job Enqueueing**
+- [x] **TASK-023: Atomic D1 Outbox & Notification Job Enqueueing**
   - **Description:** Write lead, lead services, consent link, and notification rows (`notification` table) in a single atomic D1 batch. Send message to `notifications` Queue.
   - **Related SRS Requirement:** FR-046, FR-056, FR-058, NFR-007
   - **Related SDD Section:** SDD §10.5 (MOD-09, MOD-11, DEC-B06)
   - **Acceptance Criteria:** Atomicity guaranteed: rollback of lead cancels notification; notification dedupe key prevents duplicate entries.
   - **Required Tests:** Integration test verifying atomic write of lead and outbox rows.
   - **Dependencies:** TASK-022
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-024: Queue Consumer & Notification Dispatcher (Email & Slack)**
+- [x] **TASK-024: Queue Consumer & Notification Dispatcher (Email & Slack)**
   - **Description:** Implement `queue()` handler in Worker processing outbox rows with retries and exponential backoff. Integrate Cloudflare Email Service and Slack webhook adapters.
   - **Related SRS Requirement:** FR-058, FR-059, FR-060, FR-061, FR-065, EXC-009, EXC-010
   - **Related SDD Section:** SDD §10.5 (MOD-11)
   - **Acceptance Criteria:** Formats email and Slack message from template; flags Hot leads with `🔥 HOT LEAD`; retries failed deliveries up to 5 times.
   - **Required Tests:** Worker queue tests with fake email and Slack adapters; verify status updates to `sent` or `undeliverable`.
   - **Dependencies:** TASK-023
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-025: Every-Minute Cron Trigger Sweep**
+- [x] **TASK-025: Every-Minute Cron Trigger Sweep**
   - **Description:** Implement `scheduled()` handler in Worker running every minute (`* * * * *`) to re-queue stuck outbox rows older than 2 minutes, check handover timeouts, and write heartbeat.
   - **Related SRS Requirement:** NFR-008, EXC-011
   - **Related SDD Section:** SDD §10.5, §11.3, §16.2 (MOD-16)
   - **Acceptance Criteria:** Cron sweep recovers pending outbox rows; writes heartbeat to `job_run`.
   - **Required Tests:** Test scheduled event execution and recovery of simulated dropped outbox messages.
   - **Dependencies:** TASK-024
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-026: Working Hours Evaluator (PKT Timezone Math)**
+- [x] **TASK-026: Working Hours Evaluator (PKT Timezone Math)**
   - **Description:** Implement timezone-aware evaluation checking whether current time is within 9:00 AM – 7:00 PM PKT, Monday to Friday.
   - **Related SRS Requirement:** CON-007, BR-012, FR-070, FR-071
   - **Related SDD Section:** SDD §11.3 (MOD-10)
   - **Acceptance Criteria:** Accurately evaluates PKT time; handles weekends and `callback_only_today` setting; routes to callback outside hours.
   - **Required Tests:** Unit tests with simulated timestamps (Sunday evening, Tuesday 11 AM PKT, holiday).
   - **Dependencies:** TASK-005
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-027: Handover Durable Object Alarm & 3-Minute Timer**
+- [x] **TASK-027: Handover Durable Object Alarm & 3-Minute Timer**
   - **Description:** Implement `MOD-10` handover initiation in `Conversation` DO. Sets DO alarm for `now + 180 seconds`. If unaccepted when alarm fires, transitions to callback form.
   - **Related SRS Requirement:** FR-069, FR-072, FR-073, EXC-013
   - **Related SDD Section:** SDD §11.2, §11.3 (MOD-10, DEC-B04)
   - **Acceptance Criteria:** DO alarm triggers at 180s; cancels alarm if staff accepts; transitions to `TIMED_OUT` and renders callback form.
   - **Required Tests:** Alarm unit test in Workers test pool verifying timer fires callback transition at exactly 180s.
   - **Dependencies:** TASK-017, TASK-026
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-028: Durable Object `StaffHub` & WebSocket Live Relay**
+- [x] **TASK-028: Durable Object `StaffHub` & WebSocket Live Relay**
   - **Description:** Implement singleton `StaffHub` DO broadcasting waiting handovers to staff sockets. Connects staff operator to visitor `Conversation` DO for two-way live chat with WebSocket Hibernation.
   - **Related SRS Requirement:** FR-075, FR-076, FR-105, FR-110, IR-002
   - **Related SDD Section:** SDD §11.4 (MOD-10, DEC-B03)
   - **Acceptance Criteria:** First staff member to accept claims chat; AI remains silent during live chat; messages relay bi-directionally; disconnect handled cleanly.
   - **Required Tests:** End-to-end WebSocket relay test between simulated visitor and staff connections.
   - **Dependencies:** TASK-027
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
-- [ ] **TASK-029: Callback Request Form Intake**
+- [x] **TASK-029: Callback Request Form Intake**
   - **Description:** Implement `POST /api/v1/public/sessions/{id}/callback` storing callback details, creating a lead with `source = callback`, and enqueueing urgent sales alert.
   - **Related SRS Requirement:** FR-078, FR-079, FR-129, DR-006
   - **Related SDD Section:** SDD §10.6, §11.2 (MOD-10)
   - **Acceptance Criteria:** Saves callback row in D1; creates linked lead record; enqueues outbox alert.
   - **Required Tests:** API test submitting callback; verify DB records and outbox row creation.
   - **Dependencies:** TASK-023, TASK-027
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 ---
