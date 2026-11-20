@@ -11,7 +11,8 @@ export interface CreateLeadAndOutboxParams {
 
 export interface CreateLeadAndOutboxResult {
   leadId: string;
-  notificationId: string;
+  emailNotificationId: string;
+  slackNotificationId: string;
   priority: string;
 }
 
@@ -21,7 +22,8 @@ export async function createLeadAndOutboxBatch(
   params: CreateLeadAndOutboxParams
 ): Promise<CreateLeadAndOutboxResult> {
   const leadId = uuidv7();
-  const notificationId = uuidv7();
+  const emailNotificationId = uuidv7();
+  const slackNotificationId = uuidv7();
   const now = Date.now();
 
   // 1. Fetch budget and timeline info for scoring
@@ -39,7 +41,7 @@ export async function createLeadAndOutboxBatch(
     const tRow = await db
       .prepare("SELECT within_3_months FROM timeline_option WHERE id = ?")
       .bind(params.intakeData.timelineOptionId)
-      .first<{ within_3_months: number }>();
+      .first<{ timeline_option_id: string; within_3_months: number }>();
     timelineWithin3 = tRow?.within_3_months === 1;
   }
 
@@ -63,6 +65,7 @@ export async function createLeadAndOutboxBatch(
 
   const payload = JSON.stringify({
     leadId,
+    conversationId: params.conversationId,
     name: params.intakeData.name,
     email: params.intakeData.email,
     phone: params.intakeData.phone,
@@ -70,12 +73,15 @@ export async function createLeadAndOutboxBatch(
     priority,
     currency: params.intakeData.currency,
     description: params.intakeData.description,
-    source: params.source || "assistant"
+    source: params.source || "assistant",
+    createdAt: now
   });
 
-  const dedupeKey = `lead:${leadId}`;
+  // Dedupe key per SDD §10.5: event type + record id + version + channel
+  const emailDedupeKey = `lead:${leadId}:v1:email`;
+  const slackDedupeKey = `lead:${leadId}:v1:slack`;
 
-  // 4. Atomic D1 Batch: Lead + Lead_Service + Outbox Notification
+  // 4. Atomic D1 Batch: Lead + Lead_Service + 2 Outbox Notifications (Email + Slack)
   const batchStatements: D1PreparedStatement[] = [
     db.prepare(
       `INSERT INTO lead (id, conversation_id, consent_id, name, email, phone, budget_range_id, timeline_option_id, currency, description, priority, source, created_at)
@@ -96,10 +102,17 @@ export async function createLeadAndOutboxBatch(
       now
     ),
 
+    // Outbox Row 1: Email
     db.prepare(
       `INSERT INTO notification (id, event_type, channel, dedupe_key, payload, status, attempts, created_at)
        VALUES (?, 'lead_alert', 'email', ?, ?, 'pending', 0, ?)`
-    ).bind(notificationId, dedupeKey, payload, now)
+    ).bind(emailNotificationId, emailDedupeKey, payload, now),
+
+    // Outbox Row 2: Slack
+    db.prepare(
+      `INSERT INTO notification (id, event_type, channel, dedupe_key, payload, status, attempts, created_at)
+       VALUES (?, 'lead_alert', 'slack', ?, ?, 'pending', 0, ?)`
+    ).bind(slackNotificationId, slackDedupeKey, payload, now)
   ];
 
   if (serviceId) {
@@ -112,21 +125,18 @@ export async function createLeadAndOutboxBatch(
 
   await db.batch(batchStatements);
 
-  // 5. Send message to notifications Queue
+  // 5. Send messages to notifications Queue for both channels
   if (queue) {
-    await queue.send({
-      notificationId,
-      leadId,
-      priority,
-      dedupeKey
-    }).catch(() => {
-      // If immediate queue push fails, the cron trigger sweep recovers pending notification rows
-    });
+    await Promise.allSettled([
+      queue.send({ notificationId: emailNotificationId, dedupeKey: emailDedupeKey }),
+      queue.send({ notificationId: slackNotificationId, dedupeKey: slackDedupeKey })
+    ]);
   }
 
   return {
     leadId,
-    notificationId,
+    emailNotificationId,
+    slackNotificationId,
     priority
   };
 }

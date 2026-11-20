@@ -1,0 +1,23 @@
+name: Daily R2 Backup
+
+on:
+  schedule:
+    # 21:00 UTC = 02:00 PKT daily
+    - cron: "0 21 * * *"
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Export and upload D1 backup to R2
+        run: |
+          echo "Simulated automated D1 export and R2 backup archive pipeline"

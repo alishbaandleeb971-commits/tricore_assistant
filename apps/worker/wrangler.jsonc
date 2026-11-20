@@ -30,7 +30,7 @@
   "migrations": [
     {
       "tag": "v1",
-      "new_classes": ["ConversationDO", "StaffHubDO"]
+      "new_sqlite_classes": ["ConversationDO", "StaffHubDO"]
     }
   ],
 
@@ -65,7 +65,7 @@
 
   "assets": {
     "binding": "ASSETS",
-    "directory": "../widget/dist"
+    "directory": "./public"
   },
 
   "triggers": {

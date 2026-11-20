@@ -8,6 +8,9 @@
     "packages/*"
   ],
   "scripts": {
+    "dev": "npm --prefix apps/worker run dev",
+    "db:migrate:local": "npm --prefix apps/worker run db:migrate:local",
+    "db:seed:local": "npm --prefix apps/worker run db:seed:local",
     "typecheck": "tsc -b",
     "lint": "eslint .",
     "format:check": "prettier --check .",
@@ -16,12 +19,14 @@
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "0.5.24",
-    "@cloudflare/workers-types": "4.20241112.0",
+    "@cloudflare/workers-types": "5.20261115.1",
+    "@vitest/runner": "2.1.4",
+    "@vitest/snapshot": "2.1.4",
     "eslint": "9.14.0",
     "prettier": "3.3.3",
     "typescript": "5.6.3",
     "typescript-eslint": "8.14.0",
     "vitest": "2.1.4",
-    "wrangler": "3.86.0"
+    "wrangler": "4.162.0"
   }
 }

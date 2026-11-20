@@ -35,16 +35,23 @@ describe("Atomic D1 Outbox & Notification Job (TASK-023)", () => {
     });
 
     expect(res.leadId).toBeDefined();
-    expect(res.notificationId).toBeDefined();
+    expect(res.emailNotificationId).toBeDefined();
+    expect(res.slackNotificationId).toBeDefined();
     expect(res.priority).toBe("hot");
 
     // Verify atomic persistence in D1
-    const leadRow = await env.DB.prepare("SELECT * FROM lead WHERE id = ?").bind(res.leadId).first();
+    const leadRow = await env.DB.prepare("SELECT * FROM lead WHERE id = ?").bind(res.leadId).first<{ name: string; priority: string }>();
     expect(leadRow?.name).toBe("Usman Ghani");
     expect(leadRow?.priority).toBe("hot");
 
-    const notifRow = await env.DB.prepare("SELECT * FROM notification WHERE id = ?").bind(res.notificationId).first();
-    expect(notifRow?.status).toBe("pending");
-    expect(notifRow?.dedupe_key).toBe(`lead:${res.leadId}`);
+    const emailRow = await env.DB.prepare("SELECT * FROM notification WHERE id = ?").bind(res.emailNotificationId).first<{ status: string; dedupe_key: string; channel: string }>();
+    expect(emailRow?.status).toBe("pending");
+    expect(emailRow?.channel).toBe("email");
+    expect(emailRow?.dedupe_key).toBe(`lead:${res.leadId}:v1:email`);
+
+    const slackRow = await env.DB.prepare("SELECT * FROM notification WHERE id = ?").bind(res.slackNotificationId).first<{ status: string; dedupe_key: string; channel: string }>();
+    expect(slackRow?.status).toBe("pending");
+    expect(slackRow?.channel).toBe("slack");
+    expect(slackRow?.dedupe_key).toBe(`lead:${res.leadId}:v1:slack`);
   });
 });

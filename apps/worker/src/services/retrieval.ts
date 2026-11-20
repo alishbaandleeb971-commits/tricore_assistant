@@ -3,6 +3,7 @@ export interface RetrievedChunk {
   title: string;
   keywords: string;
   body: string;
+  entryType?: string;
   score: number;
 }
 
@@ -11,20 +12,32 @@ export async function retrieveKnowledgeChunks(
   query: string,
   limit = 4
 ): Promise<RetrievedChunk[]> {
-  const sanitized = query
+  const STOP_WORDS = new Set([
+    "a", "an", "the", "and", "or", "in", "on", "at", "to", "for", "of", "with",
+    "by", "from", "up", "about", "into", "over", "after", "is", "are", "was",
+    "were", "be", "been", "being", "have", "has", "had", "do", "does", "did",
+    "can", "could", "will", "would", "shall", "should", "may", "might", "must",
+    "i", "you", "he", "she", "it", "we", "they", "what", "which", "who", "when",
+    "where", "why", "how", "all", "any", "both", "each", "few", "more", "most",
+    "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so",
+    "than", "too", "very", "s", "t", "just", "don", "shouldn", "now"
+  ]);
+
+  const words = query
     .replace(/[^\w\s]/g, " ")
     .trim()
     .split(/\s+/)
-    .filter((w) => w.length > 1)
-    .join(" OR ");
+    .map((w) => w.trim())
+    .filter((w) => w.length > 1 && !STOP_WORDS.has(w.toLowerCase()));
+
+  const sanitized = words.length > 0 ? words.join(" OR ") : "";
 
   if (!sanitized) {
     return [];
   }
 
-  // Query knowledge_fts using bm25 ranking
-  // SQLite FTS5 bm25 weights for knowledge_fts(title, keywords, body):
-  // bm25(knowledge_fts, 10.0, 5.0, 1.0)
+  // Query knowledge_fts using bm25 ranking with title(10), keywords(5), body(1)
+  // and a 2.0x boost for Type: Service entries
   const results = await db
     .prepare(
       `SELECT
@@ -32,8 +45,12 @@ export async function retrieveKnowledgeChunks(
          f.title,
          f.keywords,
          f.body,
-         bm25(knowledge_fts, 10.0, 5.0, 1.0) as score
+         coalesce(e.entry_type, 'faq') as entryType,
+         bm25(knowledge_fts, 10.0, 5.0, 1.0) * (CASE WHEN e.entry_type = 'service' THEN 2.0 ELSE 1.0 END) as score
        FROM knowledge_fts f
+       LEFT JOIN knowledge_chunk c ON c.id = f.chunk_id
+       LEFT JOIN knowledge_entry_version v ON v.id = c.entry_version_id
+       LEFT JOIN knowledge_entry e ON e.id = v.entry_id
        WHERE knowledge_fts MATCH ?
        ORDER BY score ASC
        LIMIT ?`

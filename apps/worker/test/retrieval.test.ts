@@ -15,4 +15,18 @@ describe("SQLite FTS5 Knowledge Retrieval Service (TASK-013)", () => {
     const results = await retrieveKnowledgeChunks(env.DB, "    ", 4);
     expect(results).toEqual([]);
   });
+
+  it("ranks SEO service entry first for 'Do you do SEO?' (boosts Type: Service over combination)", async () => {
+    const results = await retrieveKnowledgeChunks(env.DB, "Do you do SEO?", 4);
+    expect(results.length).toBeGreaterThanOrEqual(1);
+    expect(results[0].title).toBe("SEO (Search Engine Optimization)");
+    expect(results[0].entryType).toBe("service");
+  });
+
+  it("ranks Services Overview first for 'What services do you offer?' (returns list of 8 services)", async () => {
+    const results = await retrieveKnowledgeChunks(env.DB, "What services do you offer?", 4);
+    expect(results.length).toBeGreaterThanOrEqual(1);
+    expect(results[0].title).toBe("Services Overview");
+    expect(results[0].body).toContain("8 core service domains");
+  });
 });

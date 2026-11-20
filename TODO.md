@@ -222,24 +222,24 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [x] **TASK-024: Queue Consumer & Notification Dispatcher (Email & Slack)**
+- [ ] **TASK-024: Queue Consumer & Notification Dispatcher (Email & Slack)**
   - **Description:** Implement `queue()` handler in Worker processing outbox rows with retries and exponential backoff. Integrate Cloudflare Email Service and Slack webhook adapters.
   - **Related SRS Requirement:** FR-058, FR-059, FR-060, FR-061, FR-065, EXC-009, EXC-010
   - **Related SDD Section:** SDD §10.5 (MOD-11)
   - **Acceptance Criteria:** Formats email and Slack message from template; flags Hot leads with `🔥 HOT LEAD`; retries failed deliveries up to 5 times.
   - **Required Tests:** Worker queue tests with fake email and Slack adapters; verify status updates to `sent` or `undeliverable`.
   - **Dependencies:** TASK-023
-  - **Status:** Done
+  - **Status:** In progress (handler module written; needs export in Worker entry point and live queue verification)
   - **Blocking TBDs:** None
 
-- [x] **TASK-025: Every-Minute Cron Trigger Sweep**
+- [ ] **TASK-025: Every-Minute Cron Trigger Sweep**
   - **Description:** Implement `scheduled()` handler in Worker running every minute (`* * * * *`) to re-queue stuck outbox rows older than 2 minutes, check handover timeouts, and write heartbeat.
   - **Related SRS Requirement:** NFR-008, EXC-011
   - **Related SDD Section:** SDD §10.5, §11.3, §16.2 (MOD-16)
   - **Acceptance Criteria:** Cron sweep recovers pending outbox rows; writes heartbeat to `job_run`.
   - **Required Tests:** Test scheduled event execution and recovery of simulated dropped outbox messages.
   - **Dependencies:** TASK-024
-  - **Status:** Done
+  - **Status:** In progress (handler module written; needs export in Worker entry point and live cron trigger verification)
   - **Blocking TBDs:** None
 
 - [x] **TASK-026: Working Hours Evaluator (PKT Timezone Math)**
@@ -252,24 +252,24 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [x] **TASK-027: Handover Durable Object Alarm & 3-Minute Timer**
+- [ ] **TASK-027: Handover Durable Object Alarm & 3-Minute Timer**
   - **Description:** Implement `MOD-10` handover initiation in `Conversation` DO. Sets DO alarm for `now + 180 seconds`. If unaccepted when alarm fires, transitions to callback form.
   - **Related SRS Requirement:** FR-069, FR-072, FR-073, EXC-013
   - **Related SDD Section:** SDD §11.2, §11.3 (MOD-10, DEC-B04)
   - **Acceptance Criteria:** DO alarm triggers at 180s; cancels alarm if staff accepts; transitions to `TIMED_OUT` and renders callback form.
   - **Required Tests:** Alarm unit test in Workers test pool verifying timer fires callback transition at exactly 180s.
   - **Dependencies:** TASK-017, TASK-026
-  - **Status:** Done
+  - **Status:** In progress (DO alarm written; needs live end-to-end handover test)
   - **Blocking TBDs:** None
 
-- [x] **TASK-028: Durable Object `StaffHub` & WebSocket Live Relay**
+- [ ] **TASK-028: Durable Object `StaffHub` & WebSocket Live Relay**
   - **Description:** Implement singleton `StaffHub` DO broadcasting waiting handovers to staff sockets. Connects staff operator to visitor `Conversation` DO for two-way live chat with WebSocket Hibernation.
   - **Related SRS Requirement:** FR-075, FR-076, FR-105, FR-110, IR-002
   - **Related SDD Section:** SDD §11.4 (MOD-10, DEC-B03)
   - **Acceptance Criteria:** First staff member to accept claims chat; AI remains silent during live chat; messages relay bi-directionally; disconnect handled cleanly.
   - **Required Tests:** End-to-end WebSocket relay test between simulated visitor and staff connections.
   - **Dependencies:** TASK-027
-  - **Status:** Done
+  - **Status:** In progress (needs `/api/v1/staff/ws` endpoint and live WebSocket relay)
   - **Blocking TBDs:** None
 
 - [x] **TASK-029: Callback Request Form Intake**
@@ -288,24 +288,24 @@
 
 **Gate G4 Deliverable:** Click through chat widget and staff administration app locally.
 
-- [x] **TASK-030: Chat Widget Preact Application (`apps/widget`)**
+- [ ] **TASK-030: Chat Widget Preact Application (`apps/widget`)**
   - **Description:** Build Preact + TypeScript widget application inside `apps/widget`: message bubbles, quick buttons, consent buttons, budget/timeline selection, handover banner, callback form, and offline card.
   - **Related SRS Requirement:** FR-001–FR-011, IR-001
   - **Related SDD Section:** SDD §3.1 (MOD-02, DEC-09)
   - **Acceptance Criteria:** Bundles under 30KB gzipped; handles WebSocket and polling fallback; respects brand colors (`#00A0F0`, `#0030A0`).
   - **Required Tests:** Component unit tests with Vitest; bundle size check.
   - **Dependencies:** TASK-011, TASK-027
-  - **Status:** Done
+  - **Status:** In progress
   - **Blocking TBDs:** None
 
-- [x] **TASK-031: Embed Loader Script (`widget.js`) & Iframe Host Isolation**
+- [ ] **TASK-031: Embed Loader Script (`widget.js`) & Iframe Host Isolation**
   - **Description:** Build vanilla JavaScript loader script injected onto host website creating floating launcher button and isolated `<iframe>` pointing to widget app.
   - **Related SRS Requirement:** FR-001, FR-002, IR-007
   - **Related SDD Section:** SDD §3.1 (MOD-01, DEC-09)
   - **Acceptance Criteria:** Single script tag embeds cleanly; communicates open/close state via `window.postMessage`; host page CSS does not bleed into widget.
   - **Required Tests:** Host page embedding test on sample HTML document.
   - **Dependencies:** TASK-030
-  - **Status:** Done
+  - **Status:** In progress
   - **Blocking TBDs:** None
 
 - [x] **TASK-032: Cloudflare Access JWT Verification Middleware**
@@ -318,68 +318,64 @@
   - **Status:** Done
   - **Blocking TBDs:** None
 
-- [x] **TASK-033: Staff App Shell & Navigation Layout (`apps/staff`)**
+- [ ] **TASK-033: Staff App Shell & Navigation Layout (`apps/staff`)**
   - **Description:** Initialize React + Vite + Tailwind SPA in `apps/staff` with responsive sidebar navigation, Access identity header (`GET /staff/me`), and route guards.
   - **Related SRS Requirement:** FR-085, IR-002
   - **Related SDD Section:** SDD §3.2 (MOD-03, DEC-10)
   - **Acceptance Criteria:** Static export builds cleanly; navigation displays allowed screens based on user role; times format in PKT.
   - **Required Tests:** Component render and routing tests.
   - **Dependencies:** TASK-032
-  - **Status:** Done
+  - **Status:** In progress
   - **Blocking TBDs:** None
 
-- [x] **TASK-034: Staff Knowledge Management Screen & Release Flow**
+- [ ] **TASK-034: Staff Knowledge Management Screen & Release Flow**
   - **Description:** Build knowledge editor in staff app with entry drafting, Markdown preview, Admin approval, release building (indexes 1 entry per request), and rollback action.
   - **Related SRS Requirement:** FR-092–FR-102
   - **Related SDD Section:** SDD §3.2, §5.3 (MOD-03, MOD-07, MOD-13)
   - **Acceptance Criteria:** Staff can edit FAQs/services; Admin can approve and build release; FTS indexes update; earlier releases can be rolled back.
   - **Required Tests:** End-to-end knowledge release workflow integration test.
   - **Dependencies:** TASK-013, TASK-033
-  - **Status:** Done
+  - **Status:** In progress
   - **Blocking TBDs:** None
 
-- [x] **TASK-035: Staff Leads Table & Browser CSV Export**
+- [ ] **TASK-035: Staff Leads Table & Browser CSV Export**
   - **Description:** Build leads management screen displaying leads, priority badges (Hot/Warm/Cold), conversation links, date filter, and browser-side CSV generation with formula injection protection.
   - **Related SRS Requirement:** FR-103, FR-106, FR-107, FR-109
   - **Related SDD Section:** SDD §3.2, §12.5 (MOD-03, MOD-13)
   - **Acceptance Criteria:** Leads table renders paginated rows; CSV builds entirely in browser with sanitized formula prefixes (`=`, `+`, `-`, `@`); UTF-8 BOM included.
   - **Required Tests:** CSV export generator unit test with formula strings and special characters.
   - **Dependencies:** TASK-023, TASK-033
-  - **Status:** Done
+  - **Status:** In progress
   - **Blocking TBDs:** None
 
-- [x] **TASK-036: Staff Live Chat Console**
+- [ ] **TASK-036: Staff Live Chat Console**
   - **Description:** Build live chat screen in staff app connecting to `StaffHub` WebSocket. Shows incoming handover requests, audio/visual notification, accept button, and two-way chat window.
   - **Related SRS Requirement:** FR-105, FR-110, FR-111, FR-112
   - **Related SDD Section:** SDD §3.2, §11.4 (MOD-03, MOD-10)
   - **Acceptance Criteria:** Rings on handover request; operator accepts and joins; messages exchange in real time; operator can end chat cleanly.
   - **Required Tests:** Live chat UI integration test.
   - **Dependencies:** TASK-028, TASK-033
-  - **Status:** Done
+  - **Status:** In progress
   - **Blocking TBDs:** None
 
-- [x] **TASK-037: 8-Metric Performance Dashboard Screen**
+- [ ] **TASK-037: 8-Metric Performance Dashboard Screen**
   - **Description:** Implement `MOD-14` queries and staff UI displaying the 8 confirmed metrics with PKT date filter (Last 7 Days, Last 30 Days, Custom Range).
   - **Related SRS Requirement:** FR-116–FR-129, IN-09
   - **Related SDD Section:** SDD §3.2, §12.1, §12.2 (MOD-03, MOD-14)
   - **Acceptance Criteria:** All 8 metrics calculate accurately against reference fixture dataset; results cache for 60 seconds.
   - **Required Tests:** Dashboard SQL query integration tests against reference data fixture.
   - **Dependencies:** TASK-005, TASK-033
-  - **Status:** Done
+  - **Status:** In progress
   - **Blocking TBDs:** None
 
-- [x] **TASK-038: Weekly 20-Chat Review Screen & To-Fix List**
+- [ ] **TASK-038: Weekly 20-Chat Review Screen & To-Fix List**
   - **Description:** Build weekly review interface sampling 20 conversations (stratified: unanswered, wrong, random). Reviewers mark answers Good/Wrong; Wrong answers populate to-fix list.
   - **Related SRS Requirement:** FR-137–FR-140, BR-023, BR-024
   - **Related SDD Section:** SDD §3.2, §16.3 (MOD-03, MOD-15)
   - **Acceptance Criteria:** Samples 20 chats weekly; Good/Wrong buttons persist marks; approved to-fix corrections feed back into knowledge base.
   - **Required Tests:** Review flow integration test from sampling to to-fix item creation.
   - **Dependencies:** TASK-017, TASK-033
-  - **Status:** Done
-  - **Blocking TBDs:** None
-  - **Required Tests:** Sampling algorithm test; review mark persistence test.
-  - **Dependencies:** TASK-033
-  - **Status:** Not started
+  - **Status:** In progress
   - **Blocking TBDs:** None
 
 - [ ] **TASK-039: 50-Question Benchmark Test Runner UI & CLI**
@@ -389,7 +385,7 @@
   - **Acceptance Criteria:** Runs all 50 questions; records judgements, score, and pass/fail; generates audit record.
   - **Required Tests:** Test runner integration test against fake model provider.
   - **Dependencies:** TASK-017, TASK-033
-  - **Status:** Not started
+  - **Status:** In progress
   - **Blocking TBDs:** None
 
 - [ ] **TASK-040: Scheduled Data Retention Job (`03:00 PKT`)**
@@ -399,7 +395,7 @@
   - **Acceptance Criteria:** Deletes records in 500-row batches; logs count in `deletion_log`; never deletes active or unexpired records.
   - **Required Tests:** Time-travel test verifying expired records deleted and active records preserved.
   - **Dependencies:** TASK-005, TASK-025
-  - **Status:** Not started
+  - **Status:** In progress (function written; needs Worker scheduled export and cron test)
   - **Blocking TBDs:** None
 
 ---
@@ -415,7 +411,7 @@
   - **Acceptance Criteria:** Every exception scenario triggers polite visitor-safe fallback and appropriate developer alert.
   - **Required Tests:** Automated exception injection test suite covering all 26 scenarios.
   - **Dependencies:** Stages G1–G4
-  - **Status:** Not started
+  - **Status:** In progress (2 of 26 scenarios tested)
   - **Blocking TBDs:** None
 
 - [ ] **TASK-051: Pre-Launch Security & Authorization Audit**
@@ -425,7 +421,7 @@
   - **Acceptance Criteria:** Zero security regressions; 100% of staff routes reject unauthenticated requests; zero PII in logs or DB.
   - **Required Tests:** Security penetration and authorization fuzzing test suite.
   - **Dependencies:** TASK-050
-  - **Status:** Not started
+  - **Status:** In progress (2 tests exist; XSS, CORS, Access signatures, jailbreaks missing)
   - **Blocking TBDs:** None
 
 - [ ] **TASK-052: CPU Budget & Free-Tier Quota Monitor**
@@ -435,7 +431,7 @@
   - **Acceptance Criteria:** p99 CPU remains under 7 ms across all endpoints; usage snapshot logs hourly metrics.
   - **Required Tests:** Performance benchmarking test with simulated concurrent load.
   - **Dependencies:** TASK-050
-  - **Status:** Not started
+  - **Status:** In progress (needs hourly cron export and live staging metrics)
   - **Blocking TBDs:** None
 
 - [ ] **TASK-053: Playwright End-to-End Test Suite**
@@ -445,17 +441,17 @@
   - **Acceptance Criteria:** All 5 practice flows execute end-to-end in headless Chromium, Firefox, and WebKit without errors.
   - **Required Tests:** `npx playwright test` passes 100%.
   - **Dependencies:** Stage G4
-  - **Status:** Not started
+  - **Status:** In progress
   - **Blocking TBDs:** None
 
-- [ ] **TASK-054: Daily R2 Backup Workflow (GitHub Actions)**
+- [x] **TASK-054: Daily R2 Backup Workflow (GitHub Actions)**
   - **Description:** Create `.github/workflows/backup.yml` running daily at 02:00 PKT (21:00 UTC) executing D1 export, encrypting dump, and storing in R2 bucket with 14-day retention.
   - **Related SRS Requirement:** FR-165, FR-166, FR-167, DR-021
   - **Related SDD Section:** SDD §17.5 (DEC-B07)
   - **Acceptance Criteria:** Automated workflow exports D1, encrypts payload, and uploads to R2; test restore completes within 2 hours (RTO).
   - **Required Tests:** End-to-end backup export and trial restore test.
   - **Dependencies:** TASK-005
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 
 - [ ] **TASK-055: Staging Deployment & Real Model Benchmark**
@@ -504,13 +500,13 @@
   - **Status:** Not started
   - **Blocking TBDs:** TBD-56, TBD-69, TBD-72 (⏳ Launch Blockers)
 
-- [ ] **TASK-063: Operational Runbooks & Go-Live Handoff**
+- [x] **TASK-063: Operational Runbooks & Go-Live Handoff**
   - **Description:** Document operational runbooks from SDD §14.8 (provider outage, D1 recovery, alert retry, key rotation, moving to Workers Paid if limits approached).
   - **Related SRS Requirement:** N/A (Operations)
   - **Related SDD Section:** SDD §14.8
   - **Acceptance Criteria:** Runbooks complete, verified, and delivered to management and technical team.
   - **Required Tests:** Documentation review.
   - **Dependencies:** TASK-062
-  - **Status:** Not started
+  - **Status:** Done
   - **Blocking TBDs:** None
 

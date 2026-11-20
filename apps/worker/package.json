@@ -1,5 +1,5 @@
 {
-  "name": "@tricore/worker",
+  "name": "tricore-worker",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -7,7 +7,8 @@
     "dev": "wrangler dev",
     "types": "wrangler types",
     "db:generate": "drizzle-kit generate",
-    "db:migrate:local": "wrangler d1 migrations apply assistant-dev --local"
+    "db:migrate:local": "wrangler d1 migrations apply DB --local",
+    "db:seed:local": "wrangler d1 execute DB --local --file=../../migrations/0001_seed.sql && wrangler d1 execute DB --local --file=../../migrations/0002_seed_kb.sql"
   },
   "dependencies": {
     "@sentry/cloudflare": "8.38.0",
@@ -20,9 +21,9 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "4.20241112.0",
+    "@cloudflare/workers-types": "5.20261115.1",
     "drizzle-kit": "0.28.1",
     "typescript": "5.6.3",
-    "wrangler": "3.86.0"
+    "wrangler": "4.162.0"
   }
 }

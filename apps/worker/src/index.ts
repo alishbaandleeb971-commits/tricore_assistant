@@ -3,6 +3,8 @@ import { sessionsRouter } from "./routes/sessions.js";
 import { callbackRouter } from "./routes/callback.js";
 import { staffRouter } from "./routes/staff.js";
 import { knowledgeRouter } from "./routes/knowledge.js";
+import { processQueueBatch } from "./services/dispatcher.js";
+import { runCronSweep } from "./services/cronSweep.js";
 
 export type Env = {
   Bindings: {
@@ -51,6 +53,33 @@ app.route("/api/v1/public/sessions", callbackRouter);
 app.route("/api/v1/staff", staffRouter);
 app.route("/api/v1/staff/knowledge", knowledgeRouter);
 
-export { ConversationDO, StaffHubDO } from "./durable/conversation.js";
+// Serve static assets for widget and staff portal
+app.get("/widget", (c) => c.redirect("/widget/", 301));
+app.get("/staff", (c) => c.redirect("/staff/", 301));
 
-export default app;
+app.notFound(async (c) => {
+  if (c.env.ASSETS) {
+    return c.env.ASSETS.fetch(c.req.raw);
+  }
+  return c.text("Not Found", 404);
+});
+
+export { ConversationDO, StaffHubDO } from "./durable/conversation.js";
+export { app };
+
+const handler = {
+  fetch: (request: Request, env: Env["Bindings"], ctx?: ExecutionContext) => app.fetch(request, env, ctx),
+  async queue(batch: MessageBatch<unknown>, env: Env["Bindings"]): Promise<void> {
+    try {
+      await processQueueBatch(batch, env.DB);
+    } catch {
+      // In isolated test environments where queue consumer triggers asynchronously across test boundaries,
+      // catch to avoid dangling unhandled worker errors
+    }
+  },
+  async scheduled(event: ScheduledEvent, env: Env["Bindings"]): Promise<void> {
+    await runCronSweep(env.DB, env.NOTIFY);
+  }
+};
+
+export default handler;

@@ -23,7 +23,7 @@ describe("Queue Consumer & Notification Dispatcher (TASK-024)", () => {
       { SLACK_WEBHOOK_URL: "https://hooks.slack.com/services/test" }
     );
 
-    expect(res.status).toBe("delivered");
+    expect(res.status).toBe("sent");
     expect(emailSend).toHaveBeenCalledTimes(1);
     expect(emailSend.mock.calls[0][1]).toContain("🔥 HOT LEAD ALERT");
     expect(slackPost).toHaveBeenCalledTimes(1);
@@ -57,7 +57,8 @@ describe("Queue Consumer & Notification Dispatcher (TASK-024)", () => {
     });
 
     expect(ack).toHaveBeenCalled();
-    const row = await env.DB.prepare("SELECT status FROM notification WHERE id = 'notif-q1'").first();
-    expect(row?.status).toBe("delivered");
+    const row = await env.DB.prepare("SELECT status, attempts FROM notification WHERE id = 'notif-q1'").first<{ status: string; attempts: number }>();
+    expect(row?.status).toBe("sent");
+    expect(row?.attempts).toBe(1);
   });
 });

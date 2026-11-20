@@ -38,8 +38,13 @@ describe("Callback Request Intake API (TASK-029)", () => {
     expect(leadRow?.source).toBe("callback");
     expect(leadRow?.priority).toBe("hot");
 
-    // Verify urgent notification
-    const notif = await env.DB.prepare("SELECT * FROM notification WHERE dedupe_key = ?").bind(`callback:${body.callbackId}`).first();
-    expect(notif?.status).toBe("pending");
+    // Verify urgent notification rows (Email + Slack)
+    const emailNotif = await env.DB.prepare("SELECT * FROM notification WHERE dedupe_key = ?").bind(`callback:${body.callbackId}:v1:email`).first<{ status: string; channel: string }>();
+    expect(emailNotif?.status).toBe("pending");
+    expect(emailNotif?.channel).toBe("email");
+
+    const slackNotif = await env.DB.prepare("SELECT * FROM notification WHERE dedupe_key = ?").bind(`callback:${body.callbackId}:v1:slack`).first<{ status: string; channel: string }>();
+    expect(slackNotif?.status).toBe("pending");
+    expect(slackNotif?.channel).toBe("slack");
   });
 });
