@@ -220,12 +220,15 @@ describe("Stage G3 Queue Consumer, Outbox Lifecycle & Handover Alert Integration
     );
     const { sessionId } = (await initRes.json()) as { sessionId: string };
 
-    // B. Visitor says: "I want to talk to a human"
+    // B. Visitor says: "I want to talk to a human" (outside hours: Sunday)
     const hoTurnRes = await app.fetch(
       new Request(`http://localhost/api/v1/public/sessions/${sessionId}/messages`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: "I want to talk to a human" })
+        body: JSON.stringify({
+          text: "I want to talk to a human",
+          fakeTime: "2026-11-22T22:00:00+05:00" // Explicit Sunday 10 PM PKT
+        })
       }),
       env
     );

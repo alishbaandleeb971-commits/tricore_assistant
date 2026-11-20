@@ -11,6 +11,7 @@ export default tseslint.config(
       "**/.wrangler/**",
       "**/migrations/**",
       "apps/widget/public/**",
+      "apps/worker/public/**",
       "doc/**"
     ]
   },

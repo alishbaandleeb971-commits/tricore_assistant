@@ -18,7 +18,7 @@ export const sessionsRouter = new Hono<SessionEnv>();
 
 sessionsRouter.post("/:id/messages", async (c) => {
   const sessionId = c.req.param("id");
-  const body = await c.req.json<{ text?: string; clientMessageId?: string }>().catch(() => ({ text: undefined }));
+  const body = await c.req.json<{ text?: string; clientMessageId?: string; fakeTime?: string }>().catch(() => ({ text: undefined }));
   const text = body?.text;
 
   if (!text || typeof text !== "string" || !text.trim()) {
@@ -51,7 +51,8 @@ sessionsRouter.post("/:id/messages", async (c) => {
     body: JSON.stringify({
       sessionId,
       content: text.trim(),
-      clientMessageId: body?.clientMessageId
+      clientMessageId: body?.clientMessageId,
+      fakeTime: body?.fakeTime
     })
   });
 
@@ -124,7 +125,7 @@ sessionsRouter.post("/:id/consent", async (c) => {
   }
 
   // Ensure conversation row exists
-  let conv = await c.env.DB.prepare(
+  const conv = await c.env.DB.prepare(
     "SELECT id FROM conversation WHERE session_id = ? ORDER BY created_at DESC LIMIT 1"
   )
     .bind(sessionId)
@@ -188,7 +189,7 @@ sessionsRouter.post("/:id/lead", async (c) => {
   }
 
   // Find or create conversation
-  let conv = await c.env.DB.prepare(
+  const conv = await c.env.DB.prepare(
     "SELECT id FROM conversation WHERE session_id = ? ORDER BY created_at DESC LIMIT 1"
   )
     .bind(sessionId)
@@ -287,7 +288,7 @@ sessionsRouter.post("/:id/handover", async (c) => {
   const convDO = c.env.CONVERSATION.get(doId);
 
   // Find or create conversation ID
-  let conv = await c.env.DB.prepare(
+  const conv = await c.env.DB.prepare(
     "SELECT id FROM conversation WHERE session_id = ? ORDER BY created_at DESC LIMIT 1"
   )
     .bind(sessionId)

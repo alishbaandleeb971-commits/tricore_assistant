@@ -58,6 +58,7 @@ type LeadField =
 export interface ConversationTurnRequest {
   clientMessageId?: string;
   content: string;
+  fakeTime?: string;
 }
 
 export interface Button {
@@ -434,7 +435,7 @@ export class ConversationDO {
     }
 
     // Rule 7: Chatting — AI-powered reply
-    return this.handleChattingTurn(maskedContent, req.clientMessageId);
+    return this.handleChattingTurn(maskedContent, req.clientMessageId, req.fakeTime);
   }
 
   // ===========================================================================
@@ -442,7 +443,8 @@ export class ConversationDO {
   // ===========================================================================
   private async handleChattingTurn(
     maskedContent: string,
-    clientMessageId?: string
+    clientMessageId?: string,
+    fakeTime?: string
   ): Promise<ConversationTurnResponse> {
     const retrieved = await retrieveKnowledgeChunks(this.env.DB, maskedContent, 4);
     const approvedChunkIds = retrieved.map((r) => r.chunkId);
@@ -486,7 +488,8 @@ export class ConversationDO {
 
     // Detect explicit human request -> check working hours (SDD §6.2, §6.4 Rule 5)
     if (aiRes.intent === "handover_request") {
-      const wh = isWithinPktWorkingHours();
+      const checkDate = fakeTime ? new Date(fakeTime) : new Date();
+      const wh = isWithinPktWorkingHours(checkDate);
       if (!wh.isWithinWorkingHours) {
         this.stage = "CallbackForm";
         await this.save();
